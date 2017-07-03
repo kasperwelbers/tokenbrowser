@@ -12,4 +12,3 @@ data(lda_mod)
 Word assignments, docXtopic matrix and topicXword matrix of an LDA model of the SOTU data
 }
 \keyword{datasets}
-

@@ -15,4 +15,3 @@ a character vector with the content of the html style attribute
 \description{
 Designed to be used together with the html_attributes function.
 }
-

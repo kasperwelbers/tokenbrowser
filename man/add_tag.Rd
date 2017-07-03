@@ -19,4 +19,3 @@ a character vector
 \description{
 Wrap values in an HTML tag
 }
-

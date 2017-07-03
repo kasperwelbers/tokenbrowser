@@ -30,4 +30,3 @@ The name of the file where the reader is saved. Can be opened conveniently from 
 \description{
 Convert tokens into full texts in an HTML file
 }
-

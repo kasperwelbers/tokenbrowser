@@ -36,4 +36,3 @@ attr_style(`background-color` = highlight_col(c(NA, 0, 0.1,0.5, 1)))
 tag_attr(class = c(1, 2),
          style = attr_style(`background-color` = highlight_col(c(F,T))))
 }
-

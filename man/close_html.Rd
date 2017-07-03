@@ -14,4 +14,3 @@ close_html(template, filename)
 \description{
 see documentation for \link{create_html}
 }
-

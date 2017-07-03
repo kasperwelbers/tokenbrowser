@@ -16,4 +16,3 @@ a character vector where each value contains a string for an html table.
 Each row of the data.frame is transformed into a html table with two columns: name and value.
 The columnnames of meta are used as names.
 }
-

@@ -4,14 +4,16 @@
 \alias{colorscale_tokens}
 \title{Color tokens using colorRamp}
 \usage{
-colorscale_tokens(tokens, value, alpha = 1, col_range = c("red", "blue"))
+colorscale_tokens(tokens, value, alpha = 0.4, col_range = c("red", "blue"))
 }
 \arguments{
 \item{tokens}{A character vector of tokens}
 
-\item{value}{A numeric vector with values between -1 and 1. Determines the color mixture of the scale colors specified in col_range}
+\item{value}{A numeric vector with values between -1 and 1. Determines the color mixture of the scale colors
+specified in col_range}
 
-\item{alpha}{Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being fully colored. This can be a vector to specify a different alpha for each value.}
+\item{alpha}{Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
+fully colored. This can be a vector to specify a different alpha for each value.}
 
 \item{col_range}{The colors used in the scale ramp.}
 }
@@ -25,4 +27,3 @@ This is a convenience wrapper for tag_tokens() that can be used if tokens only n
 colorscale_tokens(c('token_1','token_2','token_3'),
                  value = c(-1,0,1))
 }
-

@@ -19,4 +19,3 @@ The (local) url to the html file
 \description{
 Wrap html body in the template and save
 }
-

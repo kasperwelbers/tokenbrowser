@@ -9,7 +9,10 @@ tag_tokens(tokens, ...)
 \arguments{
 \item{tokens}{a vector of tokens}
 
-\item{...}{named arguments are used as attributes in the span tag for each token, with the name being the name of the attribute (e.g., class, . Each argument must be a vector of the same length as the number of tokens. NA values can be used to ignore attribute for a token, and if a token has NA for each attribute, it is not given a span tag.}
+\item{...}{named arguments are used as attributes in the span tag for each token, with the name being the name
+of the attribute (e.g., class, . Each argument must be a vector of the same length as the number of tokens.
+NA values can be used to ignore attribute for a token, and if a token has NA for each attribute,
+it is not given a span tag.}
 }
 \value{
 a character vector of tagged tokens
@@ -33,4 +36,3 @@ tag_tokens(tokens = c('token_1','token_2', 'token_3'),
            class = c(1,NA,NA),
            style = attr_style(color = highlight_col(c(T,T,F))))
 }
-

@@ -15,4 +15,3 @@ a character vector with attribute strings. Designed to be usable as the attr_str
 \description{
 create attribute string for html tags
 }
-

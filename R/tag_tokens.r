@@ -8,8 +8,11 @@
 #'
 #' Note that the attr_style() function can be used to conveniently set the style attribute. Also, the set_col(), highlight_col() and scale_col() functions can be used to set the color of style attributes. See the example for illustration.
 #'
-#' @param tokens a vector of tokens
-#' @param ... named arguments are used as attributes in the span tag for each token, with the name being the name of the attribute (e.g., class, . Each argument must be a vector of the same length as the number of tokens. NA values can be used to ignore attribute for a token, and if a token has NA for each attribute, it is not given a span tag.
+#' @param tokens  a vector of tokens
+#' @param ...     named arguments are used as attributes in the span tag for each token, with the name being the name
+#'                of the attribute (e.g., class, . Each argument must be a vector of the same length as the number of tokens.
+#'                NA values can be used to ignore attribute for a token, and if a token has NA for each attribute,
+#'                it is not given a span tag.
 #'
 #' @return a character vector of tagged tokens
 #' @export
@@ -35,9 +38,12 @@ tag_tokens <- function(tokens, ...) {
 #'
 #' This is a convenience wrapper for tag_tokens() that can be used if tokens only need to be colored.
 #'
-#' @param tokens A character vector of tokens
-#' @param value Either a logical vector or a numeric vector with values between 0 and 1. If a logical vector is used, then tokens with TRUE will be highlighted (with the color specified in pos_col). If a numeric vector is used, the value determines the alpha (transparency), with 0 being fully transparent and 1 being fully colored.
-#' @param col The color used to highlight
+#' @param tokens    A character vector of tokens
+#' @param value     Either a logical vector or a numeric vector with values between 0 and 1.
+#'                  If a logical vector is used, then tokens with TRUE will be highlighted (with the color specified in pos_col).
+#'                  If a numeric vector is used, the value determines the alpha (transparency), with 0 being fully transparent
+#'                  and 1 being fully colored.
+#' @param col       The color used to highlight
 #'
 #' @return a character vector of color-tagged tokens
 #' @export
@@ -50,7 +56,6 @@ tag_tokens <- function(tokens, ...) {
 #'                  value = c(0,0.3,0.6))
 highlight_tokens <- function(tokens, value, col='yellow') {
   col = highlight_col(value, col=col)
-  test = attr_style(`background-color` = col)
   tag_tokens(tokens,
              style = attr_style(`background-color` = col))
 }
@@ -59,10 +64,12 @@ highlight_tokens <- function(tokens, value, col='yellow') {
 #'
 #' This is a convenience wrapper for tag_tokens() that can be used if tokens only need to be colored.
 #'
-#' @param tokens A character vector of tokens
-#' @param value A numeric vector with values between -1 and 1. Determines the color mixture of the scale colors specified in col_range
-#' @param alpha Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being fully colored. This can be a vector to specify a different alpha for each value.
-#' @param col_range The colors used in the scale ramp.
+#' @param tokens     A character vector of tokens
+#' @param value      A numeric vector with values between -1 and 1. Determines the color mixture of the scale colors
+#'                   specified in col_range
+#' @param alpha      Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
+#'                   fully colored. This can be a vector to specify a different alpha for each value.
+#' @param col_range  The colors used in the scale ramp.
 #'
 #' @return a character vector of color-tagged tokens
 #' @export
@@ -70,10 +77,39 @@ highlight_tokens <- function(tokens, value, col='yellow') {
 #' @examples
 #' colorscale_tokens(c('token_1','token_2','token_3'),
 #'                  value = c(-1,0,1))
-colorscale_tokens <- function(tokens, value, alpha=1, col_range=c('red', 'blue')) {
+colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue')) {
   col = scale_col(value, alpha=alpha, col_range = col_range)
 
   tag_tokens(tokens,
              style = attr_style(`background-color` = col))
 }
+
+#' Highlight tokens per topic
+#'
+#' This is a convenience wrapper for tag_tokens() that can be used if tokens need to be colored per topic
+#'
+#' @param tokens    A character vector of tokens
+#' @param topic     A numeric vector with values representing topic indices.
+#' @param alpha      Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
+#'                   fully colored. This can be a vector to specify a different alpha for each value.
+#' @param colors    A character vector with color names for unique values of the value argument. Has to be the same length
+#'                  as unique(na.omit(topic))
+#'
+#' @return a character vector of color-tagged tokens
+#' @export
+topic_highlight_tokens <- function(tokens, topic, alpha=0.4, colors=NULL) {
+  ntopics = length(unique(na.omit(topic)))
+  if (is.null(colors)) colors = grDevices::rainbow(ntopics)
+  if (!length(colors) == ntopics) stop(sprintf('The number of colors (%s) is not equal to the number of topics (%s)', length(colors), ntopics))
+
+  if (length(alpha) == 1) alpha = rep(alpha, length(topic))
+  tcolor = colors[topic]
+  alpha[is.na(tcolor)] = NA
+
+  col = highlight_col(alpha, col=tcolor)
+
+  tag_tokens(tokens,
+             style = attr_style(`background-color` = col))
+}
+
 

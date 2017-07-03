@@ -12,4 +12,3 @@ data(sotu)
 Tokens from Bush and Obama's State of the Union addresses
 }
 \keyword{datasets}
-

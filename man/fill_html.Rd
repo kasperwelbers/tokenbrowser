@@ -14,4 +14,3 @@ fill_html(data, filename)
 \description{
 see documentation for \link{create_html}
 }
-

@@ -35,4 +35,3 @@ attr_style(`background-color` = scale_col(c(NA, -1, 0, 0.5, 1)))
 tag_attr(class = c(1, 2),
          style = attr_style(`background-color` = scale_col(c(-1,1))))
 }
-

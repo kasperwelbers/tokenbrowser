@@ -22,4 +22,3 @@ fill_html() can be used sequentally to fill the html.
 \details{
 The connection closes between each fill, to prevent incidental writing to the file.
 }
-

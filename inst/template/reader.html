@@ -5,11 +5,13 @@
       $CSS$
     </style>
   </head>
+
   <body>
     <div class="container">
 
     <header>
       <a name="top"></a>
+      <input type="text" id="searchField" onkeyup="searchFunction()" placeholder="<enter keyword>">
       <h1>$HEADER$</h1>
     </header>
 
@@ -25,3 +27,28 @@
   </body>
 </html>
 
+
+<script>
+function searchFunction() {
+  // Declare variables
+  var navi, input, filter, elements, n;
+  input = document.getElementById("searchField");
+  filter = input.value.toUpperCase();
+  navi = document.getElementsByTagName('li');
+  elements = document.getElementsByTagName('article');
+
+  n = 0;
+  for (var i = 0; i < elements.length; i++) {
+      if (elements[i].textContent.toUpperCase().indexOf(filter) > -1) {
+          n++
+          navi[i].style.display = 'block';
+          elements[i].style.display = 'block';
+      }
+      else {
+          navi[i].style.display = 'none';
+          elements[i].style.display = 'none';
+      }
+  }
+  document.getElementsByTagName('ndoc')[0].innerHTML = n;
+}
+</script>

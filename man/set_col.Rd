@@ -22,4 +22,3 @@ Transpose a color into the string format used in html attributes
 set_col('red')
 set_col('red', alpha=0.5)
 }
-

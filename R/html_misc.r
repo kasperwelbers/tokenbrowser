@@ -15,6 +15,7 @@ add_tag <- function(x, tag, attr_str=NULL) {
   stringi::stri_paste('<',tag, attr_str,'>',  x,  '</',tag,'>',  sep='')
 }
 
+
 #' HTML tables for meta data per document
 #'
 #' Each row of the data.frame is transformed into a html table with two columns: name and value.

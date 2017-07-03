@@ -27,4 +27,3 @@ A named vector, with document ids as names and the document html strings as valu
 \description{
 Wrap tokens into document html strings
 }
-

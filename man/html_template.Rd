@@ -19,4 +19,3 @@ A list with the html header and footer
 \description{
 create the html template
 }
-

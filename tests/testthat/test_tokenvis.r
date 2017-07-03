@@ -18,5 +18,11 @@ test_that("tokenbrowser", {
   scale[abs(scale) < 0.4] = NA
   url = colorscaled_reader(tokens, value = scale, meta=meta)
   #browseURL(url)
+
+
+  ## topics
+  topic = match(tokens$pos, c('N','M','V'))
+  url = topic_reader(tokens, topic=topic, meta=meta)
+  #browseURL(url)
 })
 

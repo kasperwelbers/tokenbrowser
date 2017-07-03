@@ -9,7 +9,10 @@ highlight_tokens(tokens, value, col = "yellow")
 \arguments{
 \item{tokens}{A character vector of tokens}
 
-\item{value}{Either a logical vector or a numeric vector with values between 0 and 1. If a logical vector is used, then tokens with TRUE will be highlighted (with the color specified in pos_col). If a numeric vector is used, the value determines the alpha (transparency), with 0 being fully transparent and 1 being fully colored.}
+\item{value}{Either a logical vector or a numeric vector with values between 0 and 1.
+If a logical vector is used, then tokens with TRUE will be highlighted (with the color specified in pos_col).
+If a numeric vector is used, the value determines the alpha (transparency), with 0 being fully transparent
+and 1 being fully colored.}
 
 \item{col}{The color used to highlight}
 }
@@ -26,4 +29,3 @@ highlight_tokens(c('token_1','token_2','token_3'),
 highlight_tokens(c('token_1','token_2','token_3'),
                  value = c(0,0.3,0.6))
 }
-
