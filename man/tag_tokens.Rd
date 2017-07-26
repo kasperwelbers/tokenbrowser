@@ -18,7 +18,7 @@ it is not given a span tag.}
 a character vector of tagged tokens
 }
 \description{
-This is the main function for adding colors, onlick effects, etc. to tokens, for which <span> tags are used. The named arguments are used to set the attributes.
+This is the main function for adding colors, onclick effects, etc. to tokens, for which <span> tags are used. The named arguments are used to set the attributes.
 }
 \details{
 If a token does not have any attributes, the <span> tag is not added.

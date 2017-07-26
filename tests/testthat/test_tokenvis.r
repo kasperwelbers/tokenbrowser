@@ -8,22 +8,20 @@ test_that("tokenbrowser", {
   url = create_reader(d$tokens, d$meta)
   #browseURL(url)
 
-  highlight = nchar(as.character(d$tokens$token))
+  highlight = nchar(as.character(sotu_data$tokens$token))
   highlight = highlight / max(highlight)
-  highlight[highlight < 0.4] = NA
-  url = highlighted_reader(d$tokens, value = highlight, d$meta)
+  highlight[highlight < 0.3] = NA
+  url = highlighted_reader(sotu_data$tokens, value = highlight, sotu_data$meta)
   #browseURL(url)
 
-  scale = nchar(as.character(d$tokens$token))
-  scale = scale / median(scale)
-  scale = rescale_var(scale, -1, 1)
-  scale[abs(scale) < 0.6] = NA
-  url = colorscaled_reader(d$tokens, value = scale, meta=d$meta)
+  scale = nchar(as.character(sotu_data$tokens$token))
+  scale = rescale_var(sqrt(scale), -1, 1)
+  url = colorscaled_reader(sotu_data$tokens, value = scale, meta=sotu_data$meta)
   #browseURL(url)
 
   ## topics
-  category = match(d$tokens$pos, c('N','M','V'))
-  url = categorical_reader(d$tokens, category=category, meta=d$meta)
+  category = match(sotu_data$tokens$pos, c('N','M','V'))
+  url = categorical_reader(sotu_data$tokens, category=category, meta=sotu_data$meta)
   #browseURL(url)
 })
 
