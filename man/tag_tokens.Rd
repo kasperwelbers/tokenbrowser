@@ -29,10 +29,10 @@ Note that the attr_style() function can be used to conveniently set the style at
 tag_tokens(tokens = c('token_1','token_2', 'token_3'),
            class = c(1,1,2),
            style = attr_style(color = set_col('red'),
-                              `background-color` = highlight_col(c(F,F,T))))
+                              `background-color` = highlight_col(c(FALSE,FALSE,TRUE))))
 
 ## tokens without attributes are not given a span tag
 tag_tokens(tokens = c('token_1','token_2', 'token_3'),
            class = c(1,NA,NA),
-           style = attr_style(color = highlight_col(c(T,T,F))))
+           style = attr_style(color = highlight_col(c(TRUE,TRUE,FALSE))))
 }

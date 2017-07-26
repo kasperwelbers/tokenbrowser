@@ -22,6 +22,7 @@ add_tag <- function(x, tag, attr_str=NULL) {
 #' The columnnames of meta are used as names.
 #'
 #' @param meta a data.frame where each row represents the meta data for a document
+#' @param ignore_col optionally, a character vector with names of metadata columns to ignore
 #'
 #' @return a character vector where each value contains a string for an html table.
 #' @export

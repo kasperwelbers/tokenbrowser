@@ -9,7 +9,7 @@ create_html(template, filename = NULL)
 \arguments{
 \item{template}{The html template file, as created with \link{html_template}}
 
-\item{filename}{}
+\item{filename}{Name of the file in which to save the html}
 }
 \value{
 the filename

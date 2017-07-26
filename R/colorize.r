@@ -12,7 +12,7 @@
 #' set_col('red', alpha=0.5)
 set_col <- function(col, alpha=1) {
   ucol = unique(col)
-  rgb_col = col2rgb(ucol)
+  rgb_col = grDevices::col2rgb(ucol)
   rgb_substring = sprintf("%s, %s, %s", rgb_col[1,], rgb_col[2,], rgb_col[3,])
   rgb_substring = rgb_substring[match(col, ucol)]
   sprintf("rgba(%s, %s)", rgb_substring, alpha)
@@ -45,7 +45,7 @@ set_col <- function(col, alpha=1) {
 #' attr_style(`background-color` = highlight_col(c(NA, 0, 0.1,0.5, 1)))
 #'
 #' tag_attr(class = c(1, 2),
-#'          style = attr_style(`background-color` = highlight_col(c(F,T))))
+#'          style = attr_style(`background-color` = highlight_col(c(FALSE,TRUE))))
 highlight_col <- function(value, col='yellow') {
   value = as.numeric(value)
   if (any(value < 0 | value > 1, na.rm = T)) stop('highlight value has to be logical (TRUE/FALSE) or a number between 0 and 1')
@@ -76,7 +76,8 @@ highlight_col <- function(value, col='yellow') {
 #' ## used in combination with attr_style()
 #' attr_style(color = scale_col(c(NA, -1, 0, 0.5, 1)))
 #'
-#' ## note that for background-color you need inversed quotes to deal with the hyphen in an argument name
+#' ## note that for background-color you need inversed
+#' ## quotes to deal with the hyphen in an argument name
 #' attr_style(`background-color` = scale_col(c(NA, -1, 0, 0.5, 1)))
 #'
 #' tag_attr(class = c(1, 2),
@@ -92,7 +93,7 @@ scale_col <- function(value, alpha=1, col_range=c('red','blue')) {
 }
 
 colscale_to_attr_rgb <- function(value, colors=c('red','blue'), alpha=1) {
-  cramp = colorRamp(colors)
+  cramp = grDevices::colorRamp(colors)
   rgb_col = cramp(value)
   rgb_col = round(rgb_col)
   sprintf("rgba(%s, %s, %s, %s)", rgb_col[,1], rgb_col[,2], rgb_col[,3], alpha)

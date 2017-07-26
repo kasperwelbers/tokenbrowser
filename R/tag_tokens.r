@@ -21,12 +21,12 @@
 #' tag_tokens(tokens = c('token_1','token_2', 'token_3'),
 #'            class = c(1,1,2),
 #'            style = attr_style(color = set_col('red'),
-#'                               `background-color` = highlight_col(c(F,F,T))))
+#'                               `background-color` = highlight_col(c(FALSE,FALSE,TRUE))))
 #'
 #' ## tokens without attributes are not given a span tag
 #' tag_tokens(tokens = c('token_1','token_2', 'token_3'),
 #'            class = c(1,NA,NA),
-#'            style = attr_style(color = highlight_col(c(T,T,F))))
+#'            style = attr_style(color = highlight_col(c(TRUE,TRUE,FALSE))))
 tag_tokens <- function(tokens, ...) {
   attr_str = tag_attr(...)
   ifelse(is.na(attr_str),
@@ -50,7 +50,7 @@ tag_tokens <- function(tokens, ...) {
 #'
 #' @examples
 #' highlight_tokens(c('token_1','token_2','token_3'),
-#'                  value = c(F,F,T))
+#'                  value = c(FALSE,FALSE,TRUE))
 #'
 #' highlight_tokens(c('token_1','token_2','token_3'),
 #'                  value = c(0,0.3,0.6))
@@ -84,26 +84,26 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
              style = attr_style(`background-color` = col))
 }
 
-#' Highlight tokens per topic
+#' Highlight tokens per category
 #'
-#' This is a convenience wrapper for tag_tokens() that can be used if tokens need to be colored per topic
+#' This is a convenience wrapper for tag_tokens() that can be used if tokens need to be colored per category
 #'
 #' @param tokens    A character vector of tokens
-#' @param topic     A numeric vector with values representing topic indices.
+#' @param category  A numeric vector with values representing category indices.
 #' @param alpha      Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
 #'                   fully colored. This can be a vector to specify a different alpha for each value.
 #' @param colors    A character vector with color names for unique values of the value argument. Has to be the same length
-#'                  as unique(na.omit(topic))
+#'                  as unique(na.omit(category))
 #'
 #' @return a character vector of color-tagged tokens
 #' @export
-topic_highlight_tokens <- function(tokens, topic, alpha=0.4, colors=NULL) {
-  ntopics = length(unique(na.omit(topic)))
-  if (is.null(colors)) colors = grDevices::rainbow(ntopics)
-  if (!length(colors) == ntopics) stop(sprintf('The number of colors (%s) is not equal to the number of topics (%s)', length(colors), ntopics))
+category_highlight_tokens <- function(tokens, category, alpha=0.4, colors=NULL) {
+  ncategories = length(unique(stats::na.omit(category)))
+  if (is.null(colors)) colors = grDevices::rainbow(ncategories)
+  if (!length(colors) == ncategories) stop(sprintf('The number of colors (%s) is not equal to the number of cateories (%s)', length(colors), ncategories))
 
-  if (length(alpha) == 1) alpha = rep(alpha, length(topic))
-  tcolor = colors[topic]
+  if (length(alpha) == 1) alpha = rep(alpha, length(category))
+  tcolor = colors[category]
   alpha[is.na(tcolor)] = NA
 
   col = highlight_col(alpha, col=tcolor)

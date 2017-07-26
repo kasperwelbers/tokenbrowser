@@ -4,3 +4,12 @@ anchor_ref_list <- function(x) {
   anchor_refs = add_tag(anchor_refs, 'li')
   stringi::stri_paste(anchor_refs, collapse='\n')
 }
+
+meta_nav <- function(meta, doc_col){
+  for (col in colnames(meta)){
+    if (col == doc_col) next
+    uval = unique(meta[[col]])
+    uval = uval[order(uval)]
+
+  }
+}

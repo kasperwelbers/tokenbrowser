@@ -29,7 +29,8 @@ scale_col(c(NA, -1, 0, 0.5, 1))
 ## used in combination with attr_style()
 attr_style(color = scale_col(c(NA, -1, 0, 0.5, 1)))
 
-## note that for background-color you need inversed quotes to deal with the hyphen in an argument name
+## note that for background-color you need inversed
+## quotes to deal with the hyphen in an argument name
 attr_style(`background-color` = scale_col(c(NA, -1, 0, 0.5, 1)))
 
 tag_attr(class = c(1, 2),

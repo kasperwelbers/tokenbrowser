@@ -28,7 +28,7 @@ save_html <- function(data, template, filename=NULL) {
 #' The connection closes between each fill, to prevent incidental writing to the file.
 #'
 #' @param template The html template file, as created with \link{html_template}
-#' @param filename
+#' @param filename Name of the file in which to save the html
 #'
 #' @return the filename
 #' @export

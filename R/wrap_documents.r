@@ -8,7 +8,7 @@ create_doc_headers <- function(meta, doc_col='doc_id', add_anchor=T) {
 wrap_tokens <- function(tokens, doc_col='doc_id', token_col='token'){
   text = split(tokens[[token_col]], f = tokens[[doc_col]])
   text = stringi::stri_paste_list(text, sep=' ')
-  pretty_text_wrap(text)
+  sprintf('<p>%s</p>', pretty_text_wrap(text))
 }
 
 pretty_text_wrap <- function(x){
@@ -45,7 +45,7 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', ad
   set_col('blue')
   header = create_doc_headers(meta, doc_col = doc_col, add_anchor=add_anchor)
   texts = wrap_tokens(tokens, doc_col=doc_col, token_col=token_col)
-  backref = '<p align="right"><a style="color: blue" href=\"#top\">(back to top)</a></p>'
+  backref = '<p align="right"><a href=\"#top\">(back to top)</a></p>'
 
   docs = stringi::stri_paste(header, texts, backref, sep='\n')
   docs = add_tag(docs, 'article')

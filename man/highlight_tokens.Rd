@@ -24,7 +24,7 @@ This is a convenience wrapper for tag_tokens() that can be used if tokens only n
 }
 \examples{
 highlight_tokens(c('token_1','token_2','token_3'),
-                 value = c(F,F,T))
+                 value = c(FALSE,FALSE,TRUE))
 
 highlight_tokens(c('token_1','token_2','token_3'),
                  value = c(0,0.3,0.6))

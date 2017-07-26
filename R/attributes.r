@@ -3,6 +3,7 @@
 #' @param ... named arguments are used as attributes, with the name being the name of the attribute (e.g., class, style). All argument must be vectors of the same length, or lenght 1 (used as a constant). NA values can be used to skip an attribute. If all attributes are NA, an NA is returned
 #'
 #' @return a character vector with attribute strings. Designed to be usable as the attr_str in add_tag()
+#' @export
 tag_attr <- function(...) {
   attr = list(...)
   for (name in names(attr)) {

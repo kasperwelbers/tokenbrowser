@@ -18,7 +18,9 @@ create_reader <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token'
 
   doc_ids = unique(tokens[[doc_col]])
   n_doc = length(doc_ids)
+
   nav = anchor_ref_list(doc_ids)
+  #nav = meta_nav(meta, doc_col)
 
   template = html_template('reader', doc_width=doc_width, css_str=css_str)
   template$header = gsub('$NAVIGATION$', nav, template$header, fixed = T)
@@ -79,17 +81,17 @@ colorscaled_reader <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c(
 #'
 #' @param tokens    A data.frame with a column for document ids (doc_col)
 #'                  and a column for tokens (token_col)
-#' @param topic     A numeric vector with values representing topic indices. Can also be a factor vector, in which case
+#' @param category  A numeric vector with values representing categories. Can also be a factor vector, in which case
 #'                  the factor levels are automatically used as labels
 #' @param alpha     Optionally, the alpha (transparency) can be specified, with 0 being fully
 #'                  transparent and 1 being fully colored. This can be a vector to specify a
 #'                  different alpha for each value.
-#' @param labels    A character vector giving names to the unique values. If topic is a factor vector, the factor levels are
+#' @param labels    A character vector giving names to the unique values. If category is a factor vector, the factor levels are
 #'                  used.
 #' @param meta      A data.frame with a column for document_ids (doc_col). All other columns are added
 #'                  to the reader as document meta
-#' @param colors    A character vector with color names for unique values of the topic argument. Has to be the same length
-#'                  as unique(na.omit(topic))
+#' @param colors    A character vector with color names for unique values of the category argument. Has to be the same length
+#'                  as unique(na.omit(category))
 #' @param doc_col   The name of the document id column
 #' @param token_col The name of the token column
 #' @param filename  Name of the output file. Default is temp file
@@ -97,9 +99,7 @@ colorscaled_reader <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c(
 #'
 #' @return The name of the file where the reader is saved. Can be opened conveniently from within R using browseUrl()
 #' @export
-topic_reader <- function(tokens, topic, alpha=0.4, labels=levels(topic), meta=NULL, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, ...){
-  tokens[[token_col]] = topic_highlight_tokens(tokens[[token_col]], topic=topic, alpha=alpha, colors = colors)
+categorical_reader <- function(tokens, category, alpha=0.4, labels=levels(category), meta=NULL, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, ...){
+  tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, alpha=alpha, colors = colors)
   create_reader(tokens, meta, doc_col, token_col, filename, ...)
 }
-
-
