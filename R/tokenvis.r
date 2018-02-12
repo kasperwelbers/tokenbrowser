@@ -29,6 +29,40 @@ create_reader <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token'
   save_html(docstring, template, filename)
 }
 
+#' Convert paired sets of tokens into side-by-side full texts in an HTML file
+#'
+#' @param tokens    A data.frame with a column for document ids (doc_col)
+#'                  and a column for tokens (token_col)
+#' @param pair_ids  A data.frame in which the first 2 columns contain the document ids for pairs. (essentially an egde list)
+#' @param meta      A data.frame with a column for document_ids (doc_col). All other columns are added
+#'                  to the reader as document meta
+#' @param doc_col   The name of the document id column
+#' @param token_col The name of the token column
+#' @param filename  Name of the output file. Default is temp file
+#' @param doc_width The width of the document text field
+#' @param css_str   A character string, to be directly added to the css style header
+#'
+#' @return The name of the file where the reader is saved. Can be opened conveniently from within R using browseUrl()
+#' @export
+create_pair_reader <- function(tokens, pair_ids, meta=NULL, doc_col='doc_id', token_col='token', filename=NULL, doc_width=750, css_str=NULL){
+  docs = wrap_documents(tokens, meta, doc_col, token_col)
+  lhand = docs[match(pair_ids[[1]], names(docs))]
+  pair_ids = data.frame(x=c("111552529", "111552530","111552531", "111552532"),
+                        y=c("111552529", "111552530","111552531", "111552532"))
+  docstring = stringi::stri_paste(docs, collapse='\n\n')
+
+  doc_ids = unique(tokens[[doc_col]])
+  n_doc = length(doc_ids)
+
+  nav = anchor_ref_list(doc_ids)
+  #nav = meta_nav(meta, doc_col)
+
+  template = html_template('reader', doc_width=doc_width, css_str=css_str)
+  template$header = gsub('$NAVIGATION$', nav, template$header, fixed = T)
+  template$header = gsub('$HEADER$', sprintf('<ndoc>%s</ndoc> documents', n_doc), template$header, fixed = T)
+
+  save_html(docstring, template, filename)
+}
 #' Convert tokens into full texts in an HTML file with highlighted tokens
 #'
 #' @param tokens    A data.frame with a column for document ids (doc_col)

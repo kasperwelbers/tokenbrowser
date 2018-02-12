@@ -1,12 +1,8 @@
 test_that("tokenbrowser", {
-  library(tokenbrowser)
-
-  ## for debugging, source everything
-  ## tokenbrowser:::sourceall()
 
   d = sotu_data
   url = create_reader(d$tokens, d$meta)
-  #browseURL(url)
+  browseURL(url)
 
   highlight = nchar(as.character(sotu_data$tokens$token))
   highlight = highlight / max(highlight)

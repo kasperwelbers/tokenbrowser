@@ -2,17 +2,20 @@
 #'
 #' @param ... named arguments are used as attributes, with the name being the name of the attribute (e.g., class, style). All argument must be vectors of the same length, or lenght 1 (used as a constant). NA values can be used to skip an attribute. If all attributes are NA, an NA is returned
 #'
-#' @return a character vector with attribute strings. Designed to be usable as the attr_str in add_tag()
+#' @return a character vector with attribute strings. Designed to be usable as the attr_str in add_tag(). If ... is empty, NA is returned
 #' @export
 tag_attr <- function(...) {
   attr = list(...)
+  if (length(attr) == 0) return(NULL)
   for (name in names(attr)) {
     attr[[name]] = as.character(attr[[name]])
-    not_na = !is.na(attr[[name]])
-    attr[[name]][!is.na(attr[[name]])] = stringi::stri_paste(name, '="', attr[[name]][!is.na(attr[[name]])], '"', sep='')
+    not_na = !is.na(attr[[name]]) & !attr[[name]] == ''
+    attr[[name]][not_na] = stringi::stri_paste(name, '="', attr[[name]][not_na], '"', sep='')
   }
   do.call(paste_na_omit, args = c(attr, sep=' '))
 }
+
+
 
 #' Create the content of the html style attribute
 #'

@@ -27,11 +27,13 @@
 #' tag_tokens(tokens = c('token_1','token_2', 'token_3'),
 #'            class = c(1,NA,NA),
 #'            style = attr_style(color = highlight_col(c(TRUE,TRUE,FALSE))))
-tag_tokens <- function(tokens, ...) {
+tag_tokens <- function(tokens, tag='span', ...) {
   attr_str = tag_attr(...)
-  ifelse(is.na(attr_str),
-         yes = as.character(tokens), ## if a tokens has no attributes (for which tag_attr() returns NA), do not add a span tag.
-         no = add_tag(as.character(tokens), 'span', attr_str))
+  if (is.null(attr_str)) return(tokens)
+  if (length(attr_str) == 1) attr_str = rep(attr_str, length(tokens))
+  ifelse(attr_str == '',
+         yes = as.character(tokens), ## if a tokens has no attributes, do not add a span tag.
+         no = add_tag(as.character(tokens), tag, attr_str))
 }
 
 #' Highlight tokens
@@ -111,5 +113,3 @@ category_highlight_tokens <- function(tokens, category, alpha=0.4, colors=NULL) 
   tag_tokens(tokens,
              style = attr_style(`background-color` = col))
 }
-
-

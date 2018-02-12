@@ -1,5 +1,5 @@
 paste_na_omit <- function(..., sep='') {
-  .Call('tokenbrowser_no_na_paste', PACKAGE = 'tokenbrowser', list(...), sep)
+  .Call('_tokenbrowser_no_na_paste', PACKAGE = 'tokenbrowser', list(...), sep)
 }
 
 #' Rescale a numeric variable

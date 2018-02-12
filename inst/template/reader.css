@@ -3,9 +3,10 @@ a {
 }
 
 div.container {
-    width: $doc_width$px;
     background-color: #F5F3EE;
     border: 1px solid gray;
+    resize: both;
+    overflow: auto;
 }
 
 header, footer {

@@ -5,9 +5,22 @@
 
 using namespace Rcpp;
 
+// ngrams
+CharacterVector ngrams(CharacterVector tokens, int n, std::string sep);
+RcppExport SEXP _tokenbrowser_ngrams(SEXP tokensSEXP, SEXP nSEXP, SEXP sepSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< std::string >::type sep(sepSEXP);
+    rcpp_result_gen = Rcpp::wrap(ngrams(tokens, n, sep));
+    return rcpp_result_gen;
+END_RCPP
+}
 // no_na_paste
 CharacterVector no_na_paste(List l, std::string sep);
-RcppExport SEXP tokenbrowser_no_na_paste(SEXP lSEXP, SEXP sepSEXP) {
+RcppExport SEXP _tokenbrowser_no_na_paste(SEXP lSEXP, SEXP sepSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -19,7 +32,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"tokenbrowser_no_na_paste", (DL_FUNC) &tokenbrowser_no_na_paste, 2},
+    {"_tokenbrowser_ngrams", (DL_FUNC) &_tokenbrowser_ngrams, 3},
+    {"_tokenbrowser_no_na_paste", (DL_FUNC) &_tokenbrowser_no_na_paste, 2},
     {NULL, NULL, 0}
 };
 

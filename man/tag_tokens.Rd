@@ -4,7 +4,7 @@
 \alias{tag_tokens}
 \title{add span tags to tokens}
 \usage{
-tag_tokens(tokens, ...)
+tag_tokens(tokens, tag = "span", ...)
 }
 \arguments{
 \item{tokens}{a vector of tokens}
