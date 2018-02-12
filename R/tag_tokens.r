@@ -96,10 +96,11 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 #'                   fully colored. This can be a vector to specify a different alpha for each value.
 #' @param colors    A character vector with color names for unique values of the value argument. Has to be the same length
 #'                  as unique(na.omit(category))
+#' @param ...       Extra arguments to be passed to tag_tokens (e.g. title)
 #'
 #' @return a character vector of color-tagged tokens
 #' @export
-category_highlight_tokens <- function(tokens, category, alpha=0.4, colors=NULL) {
+category_highlight_tokens <- function(tokens, category, alpha=0.4, colors=NULL, ...) {
   ncategories = length(unique(stats::na.omit(category)))
   if (is.null(colors)) colors = grDevices::rainbow(ncategories)
   if (!length(colors) == ncategories) stop(sprintf('The number of colors (%s) is not equal to the number of cateories (%s)', length(colors), ncategories))
@@ -111,5 +112,5 @@ category_highlight_tokens <- function(tokens, category, alpha=0.4, colors=NULL) 
   col = highlight_col(alpha, col=tcolor)
 
   tag_tokens(tokens,
-             style = attr_style(`background-color` = col))
+             style = attr_style(`background-color` = col), ...)
 }

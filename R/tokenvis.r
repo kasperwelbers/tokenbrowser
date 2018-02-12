@@ -134,6 +134,6 @@ colorscaled_reader <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c(
 #' @return The name of the file where the reader is saved. Can be opened conveniently from within R using browseUrl()
 #' @export
 categorical_reader <- function(tokens, category, alpha=0.4, labels=levels(category), meta=NULL, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, ...){
-  tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, alpha=alpha, colors = colors)
+  tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, alpha=alpha, colors = colors, title=category)
   create_reader(tokens, meta, doc_col, token_col, filename, ...)
 }
