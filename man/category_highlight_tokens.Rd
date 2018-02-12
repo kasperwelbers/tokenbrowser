@@ -4,7 +4,7 @@
 \alias{category_highlight_tokens}
 \title{Highlight tokens per category}
 \usage{
-category_highlight_tokens(tokens, category, alpha = 0.4, colors = NULL)
+category_highlight_tokens(tokens, category, alpha = 0.4, colors = NULL, ...)
 }
 \arguments{
 \item{tokens}{A character vector of tokens}
@@ -16,6 +16,8 @@ fully colored. This can be a vector to specify a different alpha for each value.
 
 \item{colors}{A character vector with color names for unique values of the value argument. Has to be the same length
 as unique(na.omit(category))}
+
+\item{...}{Extra arguments to be passed to tag_tokens (e.g. title)}
 }
 \value{
 a character vector of color-tagged tokens
