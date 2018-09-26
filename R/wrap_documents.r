@@ -1,8 +1,15 @@
-create_doc_headers <- function(meta, doc_col='doc_id', add_anchor=T) {
+create_doc_headers <- function(meta, doc_col='doc_id', add_anchor=T, nav=doc_col) {
   title = add_tag(meta[[doc_col]], 'doc_id')
-  anchor = if (add_anchor) sprintf('<a name="nav_%s"></a>', meta[[doc_col]]) else NULL
-  meta = create_meta_tables(meta, ignore_col = doc_col)
-  stringi::stri_paste(anchor, title, meta, sep='\n')
+
+  if (add_anchor) {
+    anchor = sprintf('<a name="nav%s" nav="nav%s"></a>', meta[[nav]], meta[[nav]])
+    meta = create_meta_tables(meta, ignore_col = doc_col)
+    stringi::stri_paste(anchor, title, meta, sep='\n')
+  } else {
+    meta = create_meta_tables(meta, ignore_col = doc_col)
+    stringi::stri_paste(title, meta, sep='\n')
+  }
+
 }
 
 wrap_tokens <- function(tokens, doc_col='doc_id', token_col='token'){
@@ -18,6 +25,13 @@ pretty_text_wrap <- function(x){
   x
 }
 
+top_category <- function(meta, tokens, category, doc_col){
+  agg = aggregate(category, by=list(tokens[[doc_col]], category), FUN=length)
+  agg = agg[order(-agg$x),]
+  agg = agg[!duplicated(agg[[1]]),]
+  agg[[2]][match(meta[[doc_col]], agg[[1]])]
+}
+
 #' Wrap tokens into document html strings
 #'
 #' @param tokens     A data.frame with a column for document ids (doc_col)
@@ -26,12 +40,13 @@ pretty_text_wrap <- function(x){
 #'                   to the reader as document meta
 #' @param doc_col    The name of the document id column
 #' @param token_col  The name of the token column
-#' @param add_anchor If True, each document will contain an a tag with name 'nav_%s' % doc_id, that can
+#' @param add_anchor If True, each document will contain an a tag with name 'nav_%s' (see nav argument), that can
 #'                   be used for navigation.
+#' @param nav        The column in meta used for nav. Defaults to 'doc_id'
 #'
 #' @return A named vector, with document ids as names and the document html strings as values
 #' @export
-wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', add_anchor=T) {
+wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', add_anchor=T, nav=doc_col) {
   if (!is(tokens, 'data.frame')) tokens = as.data.frame(tokens)
 
   doc_id = unique(tokens[[doc_col]])
@@ -42,14 +57,15 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', ad
     meta = data.frame(doc_id = doc_id)
     colnames(meta) = doc_col
   }
-  set_col('blue')
-  header = create_doc_headers(meta, doc_col = doc_col, add_anchor=add_anchor)
+
+  header = create_doc_headers(meta, doc_col = doc_col, add_anchor=add_anchor, nav=nav)
   texts = wrap_tokens(tokens, doc_col=doc_col, token_col=token_col)
   backref = '<p align="right"><a href=\"#top\">(back to top)</a></p>'
 
   docs = stringi::stri_paste(header, texts, backref, sep='\n')
-  docs = add_tag(docs, 'article')
+  docs = add_tag(docs, 'article', tag_attr(nav  = meta[[nav]]))
   names(docs) = doc_id
+  docs = docs[order(meta[,nav,drop=F])]
   docs
 }
 

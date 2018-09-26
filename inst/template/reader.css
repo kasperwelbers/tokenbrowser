@@ -18,10 +18,12 @@ header, footer {
 }
 
 nav {
+    position: fixed;
+    top: 175px;
     float: left;
-    max-width: 160px;
+    max-width: 200px;
     margin: 0;
-    padding: 1em;
+    padding: 0.5em;
 }
 
 nav ul {
@@ -47,6 +49,9 @@ article {
     overflow: hidden;
 }
 
+article.disable-links {
+    pointer-events: none;
+}
 
 #meta_table tr, th, td {
     text-align: left;
@@ -55,11 +60,11 @@ article {
 }
 
 #searchField {
-    background-color: #4A96AD;
-    color: white;
-    width: 50%; /* Full-width */
+    background-color: #F5F3EE;
+    color: #7D1935;
+    width: 80%; /* Full-width */
     font-size: 16px; /* Increase font-size */
-    padding: 12px 20px 12px 40px; /* Add some padding */
+    padding: 12px 0px 12px 0px; /* Add some padding */
     border: 1px solid #ddd; /* Add a grey border */
     margin-bottom: 12px; /* Add some space below the input */
 }

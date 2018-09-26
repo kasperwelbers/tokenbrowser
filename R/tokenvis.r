@@ -6,21 +6,22 @@
 #'                  to the reader as document meta
 #' @param doc_col   The name of the document id column
 #' @param token_col The name of the token column
+#' @param nav       values used for navigation. href direct to
 #' @param filename  Name of the output file. Default is temp file
 #' @param doc_width The width of the document text field
 #' @param css_str   A character string, to be directly added to the css style header
 #'
 #' @return The name of the file where the reader is saved. Can be opened conveniently from within R using browseUrl()
 #' @export
-create_reader <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token', filename=NULL, doc_width=750, css_str=NULL){
-  docs = wrap_documents(tokens, meta, doc_col, token_col)
+create_reader <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token', nav = NULL, doc_nav=doc_col, filename=NULL, doc_width=750, css_str=NULL){
+  docs = wrap_documents(tokens, meta, doc_col, token_col, nav=doc_nav)
   docstring = stringi::stri_paste(docs, collapse='\n\n')
 
   doc_ids = unique(tokens[[doc_col]])
   n_doc = length(doc_ids)
 
-  nav = anchor_ref_list(doc_ids)
-  #nav = meta_nav(meta, doc_col)
+  if (is.null(nav)) nav = doc_ids
+  nav = id_nav(nav)
 
   template = html_template('reader', doc_width=doc_width, css_str=css_str)
   template$header = gsub('$NAVIGATION$', nav, template$header, fixed = T)
@@ -54,8 +55,7 @@ create_pair_reader <- function(tokens, pair_ids, meta=NULL, doc_col='doc_id', to
   doc_ids = unique(tokens[[doc_col]])
   n_doc = length(doc_ids)
 
-  nav = anchor_ref_list(doc_ids)
-  #nav = meta_nav(meta, doc_col)
+  nav = id_nav(doc_ids)
 
   template = html_template('reader', doc_width=doc_width, css_str=css_str)
   template$header = gsub('$NAVIGATION$', nav, template$header, fixed = T)
@@ -115,15 +115,18 @@ colorscaled_reader <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c(
 #'
 #' @param tokens    A data.frame with a column for document ids (doc_col)
 #'                  and a column for tokens (token_col)
-#' @param category  A numeric vector with values representing categories. Can also be a factor vector, in which case
-#'                  the factor levels are automatically used as labels
+#' @param category  Either a numeric vector with values representing categories, or a factor vector, in which case
+#'                  the values are used as labels. If a numeric vector is used, the labels can also be specified in the labels argument
 #' @param alpha     Optionally, the alpha (transparency) can be specified, with 0 being fully
 #'                  transparent and 1 being fully colored. This can be a vector to specify a
 #'                  different alpha for each value.
 #' @param labels    A character vector giving names to the unique values. If category is a factor vector, the factor levels are
 #'                  used.
 #' @param meta      A data.frame with a column for document_ids (doc_col). All other columns are added
-#'                  to the reader as document meta
+#'                  to the reader as document meta.
+#' @param meta_cat_col Optionally, the name of a (numeric) column in the meta data with the category id of the document.
+#'                     The values need to correspond to the category values, and will be used to organize the document according
+#'                     to the most strongly present category. If no column is specified, the most frequent category is used.
 #' @param colors    A character vector with color names for unique values of the category argument. Has to be the same length
 #'                  as unique(na.omit(category))
 #' @param doc_col   The name of the document id column
@@ -133,7 +136,22 @@ colorscaled_reader <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c(
 #'
 #' @return The name of the file where the reader is saved. Can be opened conveniently from within R using browseUrl()
 #' @export
-categorical_reader <- function(tokens, category, alpha=0.4, labels=levels(category), meta=NULL, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, ...){
-  tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, alpha=alpha, colors = colors, title=category)
-  create_reader(tokens, meta, doc_col, token_col, filename, ...)
+categorical_reader <- function(tokens, category, alpha=0.4, labels=NULL, meta=NULL, meta_cat_col=NULL, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, ...){
+  if (is(category, 'character')) category = as.factor(category)
+  if (is(category, 'numeric') && is.null(labels)) labels = unique(category)
+  if (is(category, 'factor')) labels = levels(category)
+
+  if (is.null(meta)) {
+    meta = data.frame(doc_id = doc_id)
+    colnames(meta) = doc_col
+  }
+  if (is.null(meta_cat_col)) {
+    meta$category = top_category(meta, tokens, category, doc_col)
+    meta_cat_col = 'category'
+  } else {
+    if (!meta_cat_col %in% colnames(meta)) stop(sprintf('The meta_cat_col ("%s") is not a column in meta', meta_cat_col))
+  }
+
+  tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, labels=labels, alpha=alpha, colors = colors)
+  create_reader(tokens, meta, doc_col, token_col, nav=labels, doc_nav=meta_cat_col, filename, ...)
 }
