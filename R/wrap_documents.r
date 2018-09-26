@@ -13,6 +13,12 @@ create_doc_headers <- function(meta, doc_col='doc_id', add_anchor=T, nav=doc_col
 }
 
 wrap_tokens <- function(tokens, doc_col='doc_id', token_col='token'){
+  if (any(is.na(tokens[[token_col]]))) {
+    if (is.factor(tokens[[token_col]])) {
+      levels(tokens[[token_col]]) = union(levels(tokens[[token_col]]), '')
+    }
+    tokens[[token_col]][is.na(tokens[[token_col]])] = ''
+  }
   text = split(tokens[[token_col]], f = tokens[[doc_col]])
   text = stringi::stri_paste_list(text, sep=' ')
   text = gsub('\\n', '<br>', text)

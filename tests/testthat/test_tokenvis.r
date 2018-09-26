@@ -1,7 +1,8 @@
 test_that("tokenbrowser", {
   d = sotu_data
 
-  url = create_reader(d$tokens, d$meta)
+  d$tokens$token[3]  = NA
+  url = create_reader(d$tokens, d$meta, token_col = 'token')
   view_reader(url)
   #browseURL(url)
 
