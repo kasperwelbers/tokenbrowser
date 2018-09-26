@@ -4,16 +4,16 @@
 \alias{categorical_reader}
 \title{Convert tokens into full texts in an HTML file with color ramp highlighting}
 \usage{
-categorical_reader(tokens, category, alpha = 0.4, labels = levels(category),
-  meta = NULL, colors = NULL, doc_col = "doc_id", token_col = "token",
-  filename = NULL, ...)
+categorical_reader(tokens, category, alpha = 0.4, labels = NULL,
+  meta = NULL, meta_cat_col = NULL, colors = NULL,
+  doc_col = "doc_id", token_col = "token", filename = NULL, ...)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)
 and a column for tokens (token_col)}
 
-\item{category}{A numeric vector with values representing categories. Can also be a factor vector, in which case
-the factor levels are automatically used as labels}
+\item{category}{Either a numeric vector with values representing categories, or a factor vector, in which case
+the values are used as labels. If a numeric vector is used, the labels can also be specified in the labels argument}
 
 \item{alpha}{Optionally, the alpha (transparency) can be specified, with 0 being fully
 transparent and 1 being fully colored. This can be a vector to specify a
@@ -23,7 +23,11 @@ different alpha for each value.}
 used.}
 
 \item{meta}{A data.frame with a column for document_ids (doc_col). All other columns are added
-to the reader as document meta}
+to the reader as document meta.}
+
+\item{meta_cat_col}{Optionally, the name of a (numeric) column in the meta data with the category id of the document.
+The values need to correspond to the category values, and will be used to organize the document according
+to the most strongly present category. If no column is specified, the most frequent category is used.}
 
 \item{colors}{A character vector with color names for unique values of the category argument. Has to be the same length
 as unique(na.omit(category))}

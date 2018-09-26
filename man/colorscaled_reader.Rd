@@ -5,8 +5,8 @@
 \title{Convert tokens into full texts in an HTML file with color ramp highlighting}
 \usage{
 colorscaled_reader(tokens, value, alpha = 0.4, meta = NULL,
-  col_range = c("red", "blue"), doc_col = "doc_id", token_col = "token",
-  filename = NULL, ...)
+  col_range = c("red", "blue"), doc_col = "doc_id",
+  token_col = "token", filename = NULL, ...)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)

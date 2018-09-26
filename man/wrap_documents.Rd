@@ -5,7 +5,7 @@
 \title{Wrap tokens into document html strings}
 \usage{
 wrap_documents(tokens, meta, doc_col = "doc_id", token_col = "token",
-  add_anchor = T)
+  add_anchor = T, nav = doc_col)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)
@@ -18,8 +18,10 @@ to the reader as document meta}
 
 \item{token_col}{The name of the token column}
 
-\item{add_anchor}{If True, each document will contain an a tag with name 'nav_%s' % doc_id, that can
+\item{add_anchor}{If True, each document will contain an a tag with name 'nav_%s' (see nav argument), that can
 be used for navigation.}
+
+\item{nav}{The column in meta used for nav. Defaults to 'doc_id'}
 }
 \value{
 A named vector, with document ids as names and the document html strings as values

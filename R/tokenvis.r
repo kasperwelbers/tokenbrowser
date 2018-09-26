@@ -142,7 +142,7 @@ categorical_reader <- function(tokens, category, alpha=0.4, labels=NULL, meta=NU
   if (is(category, 'factor')) labels = levels(category)
 
   if (is.null(meta)) {
-    meta = data.frame(doc_id = doc_id)
+    meta = data.frame(doc_id = tokens[[doc_col]])
     colnames(meta) = doc_col
   }
   if (is.null(meta_cat_col)) {

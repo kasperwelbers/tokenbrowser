@@ -4,7 +4,8 @@
 \alias{rescale_var}
 \title{Rescale a numeric variable}
 \usage{
-rescale_var(x, new_min = 0, new_max = 1, x_min = min(x), x_max = max(x))
+rescale_var(x, new_min = 0, new_max = 1, x_min = min(x),
+  x_max = max(x))
 }
 \arguments{
 \item{x}{a numeric vector}

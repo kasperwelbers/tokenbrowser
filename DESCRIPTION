@@ -20,4 +20,4 @@ Description: Rebuild a full text corpus from a token list.
 SystemRequirements: C++11
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

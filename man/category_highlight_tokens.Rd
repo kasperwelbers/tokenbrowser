@@ -4,12 +4,15 @@
 \alias{category_highlight_tokens}
 \title{Highlight tokens per category}
 \usage{
-category_highlight_tokens(tokens, category, alpha = 0.4, colors = NULL, ...)
+category_highlight_tokens(tokens, category, labels = labels,
+  alpha = 0.4, colors = NULL)
 }
 \arguments{
 \item{tokens}{A character vector of tokens}
 
 \item{category}{A numeric vector with values representing category indices.}
+
+\item{labels}{A character vector with labels for the categories}
 
 \item{alpha}{Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
 fully colored. This can be a vector to specify a different alpha for each value.}
