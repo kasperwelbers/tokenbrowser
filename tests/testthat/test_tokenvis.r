@@ -25,6 +25,12 @@ test_that("tokenbrowser", {
   url = categorical_reader(sotu_data$tokens, category=category, labels=c('N','M','V'), meta=sotu_data$meta)
   view_reader(url)
 
-  #browseURL(url)
+  library(rsyntax)
+  tokens = read.csv('~/projects/bron_extractie_demo/tokens.csv')
+  tokens = annotate(tokens, alpino_quote_queries(), column='quotes')
+  url = categorical_reader(tokens, tokens$quotes)
+  view_reader(url)
+
+  browseURL(url)
 })
 
