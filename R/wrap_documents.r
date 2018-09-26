@@ -15,6 +15,7 @@ create_doc_headers <- function(meta, doc_col='doc_id', add_anchor=T, nav=doc_col
 wrap_tokens <- function(tokens, doc_col='doc_id', token_col='token'){
   text = split(tokens[[token_col]], f = tokens[[doc_col]])
   text = stringi::stri_paste_list(text, sep=' ')
+  text = gsub('\\n', '<br>', text)
   sprintf('<p>%s</p>', pretty_text_wrap(text))
 }
 

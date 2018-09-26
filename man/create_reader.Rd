@@ -6,7 +6,7 @@
 \usage{
 create_reader(tokens, meta = NULL, doc_col = "doc_id",
   token_col = "token", nav = NULL, doc_nav = doc_col,
-  filename = NULL, doc_width = 750, css_str = NULL)
+  par_col = NULL, filename = NULL, doc_width = 750, css_str = NULL)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)

@@ -13,9 +13,10 @@
 #'
 #' @return The name of the file where the reader is saved. Can be opened conveniently from within R using browseUrl()
 #' @export
-create_reader <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token', nav = NULL, doc_nav=doc_col, filename=NULL, doc_width=750, css_str=NULL){
+create_reader <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token', nav = NULL, doc_nav=doc_col, par_col=NULL, filename=NULL, doc_width=750, css_str=NULL){
   docs = wrap_documents(tokens, meta, doc_col, token_col, nav=doc_nav)
   docstring = stringi::stri_paste(docs, collapse='\n\n')
+
   doc_ids = unique(tokens[[doc_col]])
   n_doc = length(doc_ids)
 
