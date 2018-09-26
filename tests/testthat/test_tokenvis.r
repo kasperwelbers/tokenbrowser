@@ -24,6 +24,7 @@ test_that("tokenbrowser", {
   category = match(sotu_data$tokens$pos, c('N','M','V'))
   category[sotu_data$tokens$doc_id == unique(sotu_data$tokens$doc_id)[2]] = NA
   url = categorical_reader(sotu_data$tokens, category=category, labels=c('N','M','V'), meta=sotu_data$meta)
+  view_reader(url)
   browseURL(url)
 })
 

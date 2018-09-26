@@ -138,7 +138,10 @@ colorscaled_reader <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c(
 categorical_reader <- function(tokens, category, alpha=0.4, labels=NULL, meta=NULL, meta_cat_col=NULL, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, ...){
   if (is(category, 'character')) category = as.factor(category)
   if (is(category, 'numeric') && is.null(labels)) labels = unique(category)
-  if (is(category, 'factor')) labels = levels(category)
+  if (is(category, 'factor')) {
+    if (is.null(labels)) labels = levels(category)
+    category = as.numeric(category)
+  }
 
   if (is.null(meta)) {
     meta = data.frame(doc_id = tokens[[doc_col]])
@@ -146,7 +149,10 @@ categorical_reader <- function(tokens, category, alpha=0.4, labels=NULL, meta=NU
   }
   if (is.null(meta_cat_col)) {
     meta$category = top_category(meta, tokens, category, doc_col)
-    #meta$categoru[is.na(meta$category)] = 1
+    if (any(is.na(meta$category))) {
+      meta$category[is.na(meta$category)] = max(meta$category, na.rm = T) + 1
+      labels = c(labels, 'no category')
+    }
     meta_cat_col = 'category'
   } else {
     if (!meta_cat_col %in% colnames(meta)) stop(sprintf('The meta_cat_col ("%s") is not a column in meta', meta_cat_col))
