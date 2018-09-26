@@ -16,7 +16,6 @@
 create_reader <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token', nav = NULL, doc_nav=doc_col, filename=NULL, doc_width=750, css_str=NULL){
   docs = wrap_documents(tokens, meta, doc_col, token_col, nav=doc_nav)
   docstring = stringi::stri_paste(docs, collapse='\n\n')
-
   doc_ids = unique(tokens[[doc_col]])
   n_doc = length(doc_ids)
 
@@ -84,7 +83,7 @@ create_pair_reader <- function(tokens, pair_ids, meta=NULL, doc_col='doc_id', to
 #' @export
 highlighted_reader <- function(tokens, value, meta=NULL, col='yellow', doc_col='doc_id', token_col='token', filename=NULL, ...){
   tokens[[token_col]] = highlight_tokens(tokens[[token_col]], value=value, col = col)
-  create_reader(tokens, meta, doc_col, token_col, filename, ...)
+  create_reader(tokens, meta, doc_col, token_col, filename=filename, ...)
 }
 
 #' Convert tokens into full texts in an HTML file with color ramp highlighting
@@ -108,7 +107,7 @@ highlighted_reader <- function(tokens, value, meta=NULL, col='yellow', doc_col='
 #' @export
 colorscaled_reader <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c('red','blue'), doc_col='doc_id', token_col='token', filename=NULL, ...){
   tokens[[token_col]] = colorscale_tokens(tokens[[token_col]], value=value, col_range = col_range, alpha=alpha)
-  create_reader(tokens, meta, doc_col, token_col, filename, ...)
+  create_reader(tokens, meta, doc_col, token_col, filename=filename, ...)
 }
 
 #' Convert tokens into full texts in an HTML file with color ramp highlighting
@@ -147,11 +146,12 @@ categorical_reader <- function(tokens, category, alpha=0.4, labels=NULL, meta=NU
   }
   if (is.null(meta_cat_col)) {
     meta$category = top_category(meta, tokens, category, doc_col)
+    #meta$categoru[is.na(meta$category)] = 1
     meta_cat_col = 'category'
   } else {
     if (!meta_cat_col %in% colnames(meta)) stop(sprintf('The meta_cat_col ("%s") is not a column in meta', meta_cat_col))
   }
 
   tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, labels=labels, alpha=alpha, colors = colors)
-  create_reader(tokens, meta, doc_col, token_col, nav=labels, doc_nav=meta_cat_col, filename, ...)
+  create_reader(tokens, meta, doc_col, token_col, nav=labels, doc_nav=meta_cat_col, filename= filename, ...)
 }

@@ -3,7 +3,7 @@ test_that("tokenbrowser", {
 
   url = create_reader(d$tokens, d$meta)
   view_reader(url)
-  browseURL(url)
+  #browseURL(url)
 
   highlight = nchar(as.character(sotu_data$tokens$token))
   highlight = highlight / max(highlight)
@@ -22,15 +22,8 @@ test_that("tokenbrowser", {
 
   ## topics
   category = match(sotu_data$tokens$pos, c('N','M','V'))
+  category[sotu_data$tokens$doc_id == unique(sotu_data$tokens$doc_id)[2]] = NA
   url = categorical_reader(sotu_data$tokens, category=category, labels=c('N','M','V'), meta=sotu_data$meta)
-  view_reader(url)
-
-  library(rsyntax)
-  tokens = read.csv('~/projects/bron_extractie_demo/tokens.csv')
-  tokens = annotate(tokens, alpino_quote_queries(), column='quotes')
-  url = categorical_reader(tokens, tokens$quotes)
-  view_reader(url)
-
   browseURL(url)
 })
 
