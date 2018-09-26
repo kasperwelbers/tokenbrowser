@@ -1,4 +1,3 @@
-
 #' View a reader (HTML) in the rstudio viewer
 #'
 #' @param url An URL, created with *_reader

@@ -3,7 +3,7 @@ test_that("tokenbrowser", {
 
   url = create_reader(d$tokens, d$meta)
   view_reader(url)
-  #browseURL(url)
+  browseURL(url)
 
   highlight = nchar(as.character(sotu_data$tokens$token))
   highlight = highlight / max(highlight)
