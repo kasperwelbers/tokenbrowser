@@ -4,10 +4,14 @@
 \alias{tag_tokens}
 \title{add span tags to tokens}
 \usage{
-tag_tokens(tokens, tag = "span", ...)
+tag_tokens(tokens, tag = "span", span_adjacent = F, ...)
 }
 \arguments{
-\item{tokens}{a vector of tokens}
+\item{tokens}{a vector of tokens.}
+
+\item{tag}{The name of the tag to be used}
+
+\item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
 
 \item{...}{named arguments are used as attributes in the span tag for each token, with the name being the name
 of the attribute (e.g., class, . Each argument must be a vector of the same length as the number of tokens.

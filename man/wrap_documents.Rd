@@ -5,14 +5,14 @@
 \title{Wrap tokens into document html strings}
 \usage{
 wrap_documents(tokens, meta, doc_col = "doc_id", token_col = "token",
-  add_anchor = T, nav = doc_col)
+  add_anchor = T, nav = doc_col, token_nav = NULL)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)
 and a column for tokens (token_col)}
 
 \item{meta}{A data.frame with a column for document_ids (doc_col). All other columns are added
-to the reader as document meta}
+to the browser as document meta}
 
 \item{doc_col}{The name of the document id column}
 
@@ -22,6 +22,8 @@ to the reader as document meta}
 be used for navigation.}
 
 \item{nav}{The column in meta used for nav. Defaults to 'doc_id'}
+
+\item{token_nav}{Alternative to nav (which uses meta), a column in tokens used for navigation}
 }
 \value{
 A named vector, with document ids as names and the document html strings as values

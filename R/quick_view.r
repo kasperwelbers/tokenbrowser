@@ -1,9 +1,9 @@
-#' View a reader (HTML) in the rstudio viewer
+#' View a browser (HTML) in the R viewer
 #'
-#' @param url An URL, created with *_reader
+#' @param url An URL, created with *_browser
 #'
 #' @export
-view_reader <- function(url) {
+view_browser <- function(url) {
   viewer <- getOption("viewer")
   viewer(url)
 }

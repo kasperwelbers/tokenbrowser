@@ -4,26 +4,40 @@ a {
 
 div.container {
     background-color: #F5F3EE;
-    border: 1px solid gray;
     resize: both;
     overflow: auto;
 }
 
 header, footer {
     padding: 1em;
+    margin-left: 160px;
     color: white;
     background-color: #7D1935;
     clear: left;
     text-align: center;
 }
 
-nav {
-    position: fixed;
-    top: 175px;
-    float: left;
-    max-width: 200px;
-    margin: 0;
-    padding: 0.5em;
+.articles {
+  margin-left: 160px;
+  border: 1px solid gray;
+}
+
+.navbar {
+
+}
+
+.navbar {
+        font-size: 10px;
+
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 160px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #F5F3EE;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
 }
 
 nav ul {
@@ -41,10 +55,9 @@ doc_id {
 }
 
 article {
-    width: $doc_width$;
-    margin-left: 170px;
-    border-left: 1px solid gray;
     padding: 1em;
+    line-height: 2.0;
+    font-size: 10px;
     display: block;
     overflow: hidden;
 }
@@ -55,6 +68,7 @@ article.disable-links {
 
 #meta_table tr, th, td {
     text-align: left;
+    padding: 0px;
     font-family: arial, sans-serif;
     font-size: 12px;
 }
@@ -62,9 +76,11 @@ article.disable-links {
 #searchField {
     background-color: #F5F3EE;
     color: #7D1935;
-    width: 80%; /* Full-width */
-    font-size: 16px; /* Increase font-size */
-    padding: 12px 0px 12px 0px; /* Add some padding */
+    margin-left: 10px;
+    width: 60%; /* Full-width */
+    font-size: 10px; /* Increase font-size */
+    padding: 1em;
     border: 1px solid #ddd; /* Add a grey border */
+    text-align: left;
     margin-bottom: 12px; /* Add some space below the input */
 }

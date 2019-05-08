@@ -8,7 +8,9 @@
 #'
 #' Note that the attr_style() function can be used to conveniently set the style attribute. Also, the set_col(), highlight_col() and scale_col() functions can be used to set the color of style attributes. See the example for illustration.
 #'
-#' @param tokens  a vector of tokens
+#' @param tokens  a vector of tokens.
+#' @param tag     The name of the tag to be used
+#' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
 #' @param ...     named arguments are used as attributes in the span tag for each token, with the name being the name
 #'                of the attribute (e.g., class, . Each argument must be a vector of the same length as the number of tokens.
 #'                NA values can be used to ignore attribute for a token, and if a token has NA for each attribute,
@@ -27,13 +29,14 @@
 #' tag_tokens(tokens = c('token_1','token_2', 'token_3'),
 #'            class = c(1,NA,NA),
 #'            style = attr_style(color = highlight_col(c(TRUE,TRUE,FALSE))))
-tag_tokens <- function(tokens, tag='span', ...) {
+tag_tokens <- function(tokens, tag='span', span_adjacent=F, ...) {
   attr_str = tag_attr(...)
   if (is.null(attr_str)) return(tokens)
   if (length(attr_str) == 1) attr_str = rep(attr_str, length(tokens))
   ifelse(attr_str == '',
          yes = as.character(tokens), ## if a tokens has no attributes, do not add a span tag.
-         no = add_tag(as.character(tokens), tag, attr_str))
+         no = add_tag(as.character(tokens), tag, attr_str, span_adjacent = span_adjacent))
+
 }
 
 #' Highlight tokens
@@ -113,7 +116,10 @@ category_highlight_tokens <- function(tokens, category, labels=labels, alpha=0.4
   col = highlight_col(alpha, col=tcolor)
   tokens = tag_tokens(tokens,
                       style = attr_style(`background-color` = col),
-                      title = labels[category])
-  tokens = add_tag(tokens, 'a', tag_attr(href = stringi::stri_paste('#nav', category, sep='')))
+                      title = labels[category],
+                      span_adjacent=T)
+  #tokens = tag_tokens(tokens, 'a', tag_attr(href = stringi::stri_paste('#nav', category, sep='')),
+  #                    span_adjacent=T)
   tokens
 }
+

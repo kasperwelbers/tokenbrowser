@@ -4,7 +4,7 @@
 \alias{add_tag}
 \title{Wrap values in an HTML tag}
 \usage{
-add_tag(x, tag, attr_str = NULL)
+add_tag(x, tag, attr_str = NULL, ignore_na = F, span_adjacent = F)
 }
 \arguments{
 \item{x}{a vector of values to be wrapped in a tag}
@@ -12,6 +12,10 @@ add_tag(x, tag, attr_str = NULL)
 \item{tag}{A character vector of length 1, specifying the html tag (e.g., "div", "h1", "span")}
 
 \item{attr_str}{A character string of the same length as x (or of length 1).}
+
+\item{ignore_na}{If TRUE, do not add tag if value is NA}
+
+\item{span_adjacent}{If TRUE, include adjacent tokens with identical attr_str within the same tag}
 }
 \value{
 a character vector

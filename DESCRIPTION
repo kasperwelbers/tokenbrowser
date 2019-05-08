@@ -1,9 +1,10 @@
 Package: tokenbrowser
 Type: Package
-Title: Create texts with benefits from annotated token lists 
+Title: Create full text browsers from annotated token lists
 Version: 0.1.0
 Author: Kasper Welbers and Wouter van Atteveldt
 Maintainer: Kasper Welbers <kasperwelbers@gmail.com>
+License: GPL-3
 Depends:
     R (>= 2.10)
 Imports: 
@@ -14,10 +15,9 @@ Suggests:
     testthat
 LinkingTo: Rcpp
 LazyData: true
-Description: Rebuild a full text corpus from a token list.
-    Information gained from text analyses (e.g., topic modeling, word scaling)
-    can be used to annotate the corpus and/or make it browsable.
+Description: Create browsers for reading full texts from a token list format.
+    Information obtained from text analyses (e.g., topic modeling, word scaling)
+    can be used to annotate the texts.
 SystemRequirements: C++11
-License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

@@ -8,13 +8,14 @@ tag_attr <- function(...) {
   attr = list(...)
   if (length(attr) == 0) return(NULL)
   for (name in names(attr)) {
-    attr[[name]] = as.character(attr[[name]])
-    not_na = !is.na(attr[[name]]) & !attr[[name]] == ''
-    attr[[name]][not_na] = stringi::stri_paste(name, '="', attr[[name]][not_na], '"', sep='')
+    if (name != '') {
+      attr[[name]] = as.character(attr[[name]])
+      not_na = !is.na(attr[[name]]) & !attr[[name]] == ''
+      attr[[name]][not_na] = stringi::stri_paste(name, '="', attr[[name]][not_na], '"', sep='')
+    }
   }
   do.call(paste_na_omit, args = c(attr, sep=' '))
 }
-
 
 
 #' Create the content of the html style attribute
