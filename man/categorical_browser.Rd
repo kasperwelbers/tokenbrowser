@@ -4,7 +4,7 @@
 \alias{categorical_browser}
 \title{Convert tokens into full texts in an HTML file with category highlighting}
 \usage{
-categorical_browser(tokens, category, alpha = 0.4, labels = NULL,
+categorical_browser(tokens, category, alpha = 0.3, labels = NULL,
   meta = NULL, meta_cat_col = NULL, multi_cat = F, colors = NULL,
   doc_col = "doc_id", token_col = "token", filename = NULL, ...)
 }

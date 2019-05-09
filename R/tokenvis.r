@@ -13,6 +13,9 @@
 #' @param css_str   A character string, to be directly added to the css style header
 #' @param header    Optionally, specify the header
 #' @param n         If TRUE, report N in header
+#' @param navfilter If TRUE (default) enable filtering with nav(igation) bar.
+#' @param colors    Optionally, a vector with color names for the navigation bar. Length has to be identical to
+#'                  unique non-NA items in the navigation.
 #'
 #' @return The name of the file where the browser is saved. Can be opened conveniently from within R using browseUrl()
 #' @export
@@ -23,7 +26,7 @@
 #' view_browser(url)   ## view browser in the Viewer
 #' browseURL(url)     ## view browser in default webbrowser
 #' }
-create_browser <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, doc_width=750, css_str=NULL, header=NULL, n=TRUE){
+create_browser <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, doc_width=750, css_str=NULL, header=NULL, n=TRUE, navfilter=TRUE, colors=NULL){
   docs = wrap_documents(tokens, meta, doc_col, token_col, nav=doc_nav, token_nav = token_nav)
   docstring = stringi::stri_paste(docs, collapse='\n\n')
 
@@ -37,7 +40,7 @@ create_browser <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token
   if (!is.null(token_nav)) {
     nav = if (methods::is(tokens[[token_nav]], 'factor')) levels(tokens[[token_nav]]) else unique(tokens[[token_nav]])
   }
-  if (!is.null(nav)) nav = id_nav(nav)
+  if (!is.null(nav)) nav = id_nav(nav, colors, navfilter)
 
   template = html_template('browser', doc_width=doc_width, css_str=css_str)
   template$header = gsub('$NAVIGATION$', if (is.null(nav)) '' else nav, template$header, fixed = T)
@@ -169,7 +172,7 @@ colorscaled_browser <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c
 #' view_browser(url)   ## view browser in the Viewer
 #' browseURL(url)     ## view browser in default webbrowser
 #' }
-categorical_browser <- function(tokens, category, alpha=0.4, labels=NULL, meta=NULL, meta_cat_col=NULL, multi_cat=F, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, ...){
+categorical_browser <- function(tokens, category, alpha=0.3, labels=NULL, meta=NULL, meta_cat_col=NULL, multi_cat=F, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, ...){
   if (methods::is(category, 'character')) category = as.factor(category)
   if (methods::is(category, 'numeric') && is.null(labels)) labels = unique(category)
   if (methods::is(category, 'factor')) {
@@ -182,11 +185,12 @@ categorical_browser <- function(tokens, category, alpha=0.4, labels=NULL, meta=N
     colnames(meta) = doc_col
   }
 
-  if (multi_cat) {
+  if (is.null(colors)) colors = grDevices::rainbow(length(unique(stats::na.omit(category))))
 
+  if (multi_cat) {
     tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, labels=labels, alpha=alpha, colors = colors)
     tokens[['multi_cat']] = factor(category, labels=labels)
-    create_browser(tokens, meta, doc_col, token_col, token_nav='multi_cat', filename= filename, ...)
+    create_browser(tokens, meta, doc_col, token_col, token_nav='multi_cat', filename= filename, colors=colors, ...)
 
   } else {
     if (is.null(meta_cat_col)) {
@@ -203,7 +207,7 @@ categorical_browser <- function(tokens, category, alpha=0.4, labels=NULL, meta=N
     }
 
     tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, labels=labels, alpha=alpha, colors = colors)
-    create_browser(tokens, meta, doc_col, token_col, doc_nav=meta_cat_col, filename= filename, ...)
+    create_browser(tokens, meta, doc_col, token_col, doc_nav=meta_cat_col, filename= filename, colors=colors, ...)
   }
 }
 

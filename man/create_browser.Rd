@@ -7,7 +7,7 @@
 create_browser(tokens, meta = NULL, doc_col = "doc_id",
   token_col = "token", doc_nav = NULL, token_nav = NULL,
   filename = NULL, doc_width = 750, css_str = NULL, header = NULL,
-  n = TRUE)
+  n = TRUE, navfilter = TRUE, colors = NULL)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)
@@ -33,6 +33,11 @@ to the browser as document meta}
 \item{header}{Optionally, specify the header}
 
 \item{n}{If TRUE, report N in header}
+
+\item{navfilter}{If TRUE (default) enable filtering with nav(igation) bar.}
+
+\item{colors}{Optionally, a vector with color names for the navigation bar. Length has to be identical to
+unique non-NA items in the navigation.}
 }
 \value{
 The name of the file where the browser is saved. Can be opened conveniently from within R using browseUrl()

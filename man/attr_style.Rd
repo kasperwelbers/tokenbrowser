@@ -13,5 +13,9 @@ attr_style(...)
 a character vector with the content of the html style attribute
 }
 \description{
-Designed to be used together with the html_attributes function.
+Designed to be used together with the tag_attr function.
+}
+\examples{
+tag_attr(class = c('x','y'),
+         style = attr_style(`background-color` = 'rgba(255, 255, 0, 1)'))
 }

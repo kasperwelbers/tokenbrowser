@@ -107,7 +107,7 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 category_highlight_tokens <- function(tokens, category, labels=labels, alpha=0.4, colors=NULL) {
   ncategories = length(unique(stats::na.omit(category)))
   if (is.null(colors)) colors = grDevices::rainbow(ncategories)
-  if (!length(colors) == ncategories) stop(sprintf('The number of colors (%s) is not equal to the number of cateories (%s)', length(colors), ncategories))
+  if (!length(colors) == ncategories) stop(sprintf('The number of colors (%s) is not equal to the number of categories (%s)', length(colors), ncategories))
 
   if (length(alpha) == 1) alpha = rep(alpha, length(category))
   tcolor = colors[category]

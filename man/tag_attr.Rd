@@ -15,3 +15,7 @@ a character vector with attribute strings. Designed to be usable as the attr_str
 \description{
 create attribute string for html tags
 }
+\examples{
+add_tag('TEXT', 'span')
+add_tag('TEXT', 'span', tag_attr(class='CLASS'))
+}

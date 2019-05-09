@@ -19,12 +19,12 @@
 
     <div class="navbar" id="navbar">
       <input type="text" id="searchField" onkeyup="searchFunction()" placeholder="<keyword>">
-      <ul>
+      <ul style="list-style-type:none">
         $NAVIGATION$
       </ul>
     </div>
 
-    <div class="articles">
+    <div id="articles", class="articles">
       $CONTENT$
     </div>
 
@@ -39,7 +39,7 @@ function searchFunction() {
   var input, filter, elements, n;
   input = document.getElementById("searchField");
   filter = input.value.toUpperCase();
-  elements = document.getElementsByTagName('article');
+  elements = document.getElementById('articles').children;
 
   n = 0;
   navs = [];
@@ -63,7 +63,7 @@ function searchFunction() {
 
 function navSelect() {
   var input, filter, elements, n, checkboxes, hit, navstring, nofilter;
-  elements = document.getElementsByTagName('article');
+  elements = document.getElementById('articles').children;
   checkboxes = document.getElementById('navbar').getElementsByClassName('navselect');
 
   nofilter = true;
@@ -72,20 +72,19 @@ function navSelect() {
   n = 0;
   navs = [];
   for (var i = 0; i < elements.length; i++) {
-      hit = false;
+      hit = true;
       navstring = elements[i].children[0].name;
 
-      if (nofilter)
-        hit = true;
-      else {
+      if (!nofilter){
         for (var j = 0; j < checkboxes.length; j++) {
           if (!checkboxes[j].checked) continue;
-          if (navstring.indexOf(checkboxes[j].value) > -1) {
-            hit = true;
+          if (navstring.indexOf(checkboxes[j].value) <= -1) {
+            hit = false;
             break;
           }
         }
       }
+
 
       if (hit)
         elements[i].setAttribute("infilter", "1");

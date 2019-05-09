@@ -73,9 +73,10 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', ad
 
   header = create_doc_headers(meta, doc_col = doc_col, add_anchor=add_anchor, nav=nav)
   texts = wrap_tokens(tokens, doc_col=doc_col, token_col=token_col)
-  backref = '<p align="right"><a href=\"#top\">(back to top)</a></p>'
+  docs = stringi::stri_paste(header, texts, sep='\n')
 
-  docs = stringi::stri_paste(header, texts, backref, sep='\n')
+  #backref = '<p align="right"><a href=\"#top\">(back to top)</a></p>'
+  #docs = stringi::stri_paste(header, texts, backref, sep='\n')
 
   docs = add_tag(docs, 'article', tag_attr(insearch="1",infilter="1"))
   names(docs) = doc_id

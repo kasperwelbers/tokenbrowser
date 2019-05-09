@@ -23,7 +23,15 @@ test_that("tokenbrowser", {
   ## categories
   category = match(sotu_data$tokens$pos, c('N','M','V'))
   category[sotu_data$tokens$doc_id == unique(sotu_data$tokens$doc_id)[2]] = NA ## add empty document for test
-  url = categorical_browser(sotu_data$tokens, category=category, labels=c('N','M','V'), meta=sotu_data$meta, multi_cat = T)
+  url = categorical_browser(sotu_data$tokens, category=category, labels=c('N','M','V'), meta=sotu_data$meta, multi_cat = T, navfilter=T)
+  view_browser(url)
+
+  ## search results
+  code = rep(NA, nrow(sotu_data$tokens))
+  code[grep('war', sotu_data$tokens$token)] = 'War'
+  code[grep('mother|father|child', sotu_data$tokens$token)] = 'Family'
+  code = as.factor(code)
+  url = categorical_browser(sotu_data$tokens, category=code, meta=sotu_data$meta, multi_cat = T, navfilter=T)
   view_browser(url)
 })
 

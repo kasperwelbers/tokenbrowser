@@ -4,6 +4,9 @@
 #'
 #' @return a character vector with attribute strings. Designed to be usable as the attr_str in add_tag(). If ... is empty, NA is returned
 #' @export
+#' @examples
+#' add_tag('TEXT', 'span')
+#' add_tag('TEXT', 'span', tag_attr(class='CLASS'))
 tag_attr <- function(...) {
   attr = list(...)
   if (length(attr) == 0) return(NULL)
@@ -18,15 +21,21 @@ tag_attr <- function(...) {
 }
 
 
+
+
+
 #' Create the content of the html style attribute
 #'
-#' Designed to be used together with the html_attributes function.
+#' Designed to be used together with the tag_attr function.
 #'
 #' @param ... named arguments are used as settings in the html style attribute, with the name being the name of the setting (e.g., background-color). All arguments must be vectors of the same length. NA values can be used to ignore a setting, and if all settings are NA then NA is returned (instead of an empty string for style settings).
 #'
 #' @export
 #'
 #' @return a character vector with the content of the html style attribute
+#' @examples
+#' tag_attr(class = c('x','y'),
+#'          style = attr_style(`background-color` = 'rgba(255, 255, 0, 1)'))
 attr_style <- function(...){
   style = list(...)
   for (name in names(style)) {
