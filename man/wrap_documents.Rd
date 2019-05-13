@@ -5,7 +5,8 @@
 \title{Wrap tokens into document html strings}
 \usage{
 wrap_documents(tokens, meta, doc_col = "doc_id", token_col = "token",
-  add_anchor = T, nav = doc_col, token_nav = NULL)
+  nav = doc_col, token_nav = NULL, top_nav = NULL,
+  thres_nav = NULL)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)
@@ -18,12 +19,13 @@ to the browser as document meta}
 
 \item{token_col}{The name of the token column}
 
-\item{add_anchor}{If True, each document will contain an a tag with name 'nav_%s' (see nav argument), that can
-be used for navigation.}
-
 \item{nav}{The column in meta used for nav. Defaults to 'doc_id'}
 
 \item{token_nav}{Alternative to nav (which uses meta), a column in tokens used for navigation}
+
+\item{top_nav}{If token_nav is used, navigation filters will only apply to the top x values with highest token occurence in a document}
+
+\item{thres_nav}{Like top_nav, but specifying a threshold for the minimum number of tokens.}
 }
 \value{
 A named vector, with document ids as names and the document html strings as values

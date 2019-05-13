@@ -6,8 +6,9 @@
 \usage{
 create_browser(tokens, meta = NULL, doc_col = "doc_id",
   token_col = "token", doc_nav = NULL, token_nav = NULL,
-  filename = NULL, doc_width = 750, css_str = NULL, header = NULL,
-  n = TRUE, navfilter = TRUE, colors = NULL)
+  filename = NULL, css_str = NULL, header = "", subheader = "",
+  n = TRUE, navfilter = TRUE, top_nav = NULL, thres_nav = 1,
+  colors = NULL, style_col1 = "#7D1935", style_col2 = "#F5F3EE")
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)
@@ -22,22 +23,31 @@ to the browser as document meta}
 
 \item{doc_nav}{The name of a column (factor or character) in meta, used to create a navigation bar for selecting document groups.}
 
-\item{token_nav}{Alternative to doc_nav, a column in the tokens.}
+\item{token_nav}{Alternative to doc_nav, a column in the tokens. Navigation filters will then be used to select documents in which
+the value occurs at least once.}
 
 \item{filename}{Name of the output file. Default is temp file}
-
-\item{doc_width}{The width of the document text field}
 
 \item{css_str}{A character string, to be directly added to the css style header}
 
 \item{header}{Optionally, specify the header}
 
+\item{subheader}{Optionally, specify a subheader}
+
 \item{n}{If TRUE, report N in header}
 
 \item{navfilter}{If TRUE (default) enable filtering with nav(igation) bar.}
 
+\item{top_nav}{A number. If token_nav is used, navigation filters will only apply to the top x values with highest token occurence in a document}
+
+\item{thres_nav}{Like top_nav, but specifying a threshold for the minimum number of tokens.}
+
 \item{colors}{Optionally, a vector with color names for the navigation bar. Length has to be identical to
 unique non-NA items in the navigation.}
+
+\item{style_col1}{Color of the browser header}
+
+\item{style_col2}{Color of the browser background}
 }
 \value{
 The name of the file where the browser is saved. Can be opened conveniently from within R using browseUrl()
@@ -47,7 +57,7 @@ Convert tokens into full texts in an HTML file
 }
 \examples{
 \dontrun{
-url = create_browser(d$tokens, d$meta, token_col = 'token', header = 'Speeches')
+url = create_browser(sotu_data$tokens, sotu_data$meta, token_col = 'token', header = 'Speeches')
 view_browser(url)   ## view browser in the Viewer
 browseURL(url)     ## view browser in default webbrowser
 }

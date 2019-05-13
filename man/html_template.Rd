@@ -4,14 +4,17 @@
 \alias{html_template}
 \title{create the html template}
 \usage{
-html_template(template, doc_width = 750, css_str = NULL)
+html_template(template, css_str = NULL, col1 = "#7D1935",
+  col2 = "#F5F3EE")
 }
 \arguments{
 \item{template}{The name of the template to be used}
 
-\item{doc_width}{The width of the document text field}
-
 \item{css_str}{A character string, to be directly added to the css style header}
+
+\item{col1}{The first style color (top bar color)}
+
+\item{col2}{The second style color (background color)}
 }
 \value{
 A list with the html header and footer

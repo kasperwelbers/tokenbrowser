@@ -14,13 +14,14 @@
     <header>
       <a name="top"></a>
       <h1>$HEADER$</h1>
-      <p>$N$</p>
+      <p>$SUBHEADER$</p>
     </header>
 
     <div class="navbar" id="navbar">
       <input type="text" id="searchField" onkeyup="searchFunction()" placeholder="<keyword>">
-      <ul style="list-style-type:none">
+      <ul style="list-style-type:none; padding:15px">
         $NAVIGATION$
+        <p><i>$NAVIGATION_META$</p></i>
       </ul>
     </div>
 
@@ -61,30 +62,39 @@ function searchFunction() {
   document.getElementsByTagName('ndoc')[0].innerHTML = n;
 }
 
-function navSelect() {
-  var input, filter, elements, n, checkboxes, hit, navstring, nofilter;
+function navSelect(checkbox) {
+  var input, elements, n, navbar, isradio, checkboxes, hit, nofilter;
   elements = document.getElementById('articles').children;
-  checkboxes = document.getElementById('navbar').getElementsByClassName('navselect');
+  navbar = document.getElementById('navbar');
+  checkboxes = navbar.getElementsByClassName('navselect');
 
   nofilter = true;
   for (var j = 0; j < checkboxes.length; j++) if (checkboxes[j].checked) nofilter = false;
 
   n = 0;
-  navs = [];
   for (var i = 0; i < elements.length; i++) {
       hit = true;
-      navstring = elements[i].children[0].name;
+
+      var tagarray = elements[i].children[1].children;
+      var tags = [];
+      for (var t=0; t<tagarray.length; t++) tags.push(tagarray[t].textContent);
 
       if (!nofilter){
         for (var j = 0; j < checkboxes.length; j++) {
           if (!checkboxes[j].checked) continue;
-          if (navstring.indexOf(checkboxes[j].value) <= -1) {
+          if (checkboxes[j].getAttribute('isradio') == "1") {
+            if (checkboxes[j].value != checkbox.value) {
+              checkboxes[j].checked = false;
+              continue;
+            }
+          }
+
+          if (tags.indexOf(checkboxes[j].value) <= -1) {
             hit = false;
             break;
           }
         }
       }
-
 
       if (hit)
         elements[i].setAttribute("infilter", "1");
@@ -102,5 +112,6 @@ function navSelect() {
 
   document.getElementsByTagName('ndoc')[0].innerHTML = n;
 }
+
 
 </script>

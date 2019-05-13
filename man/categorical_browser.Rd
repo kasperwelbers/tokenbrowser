@@ -5,8 +5,8 @@
 \title{Convert tokens into full texts in an HTML file with category highlighting}
 \usage{
 categorical_browser(tokens, category, alpha = 0.3, labels = NULL,
-  meta = NULL, meta_cat_col = NULL, multi_cat = F, colors = NULL,
-  doc_col = "doc_id", token_col = "token", filename = NULL, ...)
+  meta = NULL, colors = NULL, doc_col = "doc_id",
+  token_col = "token", filename = NULL, ...)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)
@@ -24,13 +24,6 @@ used.}
 
 \item{meta}{A data.frame with a column for document_ids (doc_col). All other columns are added
 to the browser as document meta.}
-
-\item{meta_cat_col}{Optionally, the name of a (numeric) column in the meta data with the category id of the document.
-The values need to correspond to the category values, and will be used to organize the document according
-to the most strongly present category. If no column is specified, the most frequent category is used.}
-
-\item{multi_cat}{Alternatively to meta_cat_col, do not select one category per document, but allow multiple categories.
-Navigation filter will then look whether a category occurs at least once in a document}
 
 \item{colors}{A character vector with color names for unique values of the category argument. Has to be the same length
 as unique(na.omit(category))}

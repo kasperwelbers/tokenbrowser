@@ -9,7 +9,7 @@
 save_html <- function(data, template, filename=NULL) {
   if (is.null(filename)) {
     filename = tempfile("tokenbrowser_", fileext = ".html")
-    message("Writing html to ", filename)
+    #message("Writing html to ", filename)
   }
   sink(filename)
   cat(template$header)
