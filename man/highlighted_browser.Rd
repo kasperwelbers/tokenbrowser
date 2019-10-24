@@ -6,7 +6,7 @@
 \usage{
 highlighted_browser(tokens, value, meta = NULL, col = "yellow",
   doc_col = "doc_id", token_col = "token", doc_nav = NULL,
-  token_nav = NULL, filename = NULL, ...)
+  token_nav = NULL, filename = NULL, span_adjacent = T, ...)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)
@@ -33,6 +33,8 @@ to the browser as document meta}
 
 \item{filename}{Name of the output file. Default is temp file}
 
+\item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
+
 \item{...}{Additional formatting arguments passed to create_browser()}
 }
 \value{
@@ -42,12 +44,13 @@ The name of the file where the browser is saved. Can be opened conveniently from
 Convert tokens into full texts in an HTML file with highlighted tokens
 }
 \examples{
-\dontrun{
 ## as an example, highlight words based on word length
 highlight = nchar(as.character(sotu_data$tokens$token))
 highlight = highlight / max(highlight)
 highlight[highlight < 0.3] = NA
 url = highlighted_browser(sotu_data$tokens, value = highlight, sotu_data$meta)
+
+\donttest{
 view_browser(url)   ## view browser in the Viewer
 browseURL(url)     ## view browser in default webbrowser
 }

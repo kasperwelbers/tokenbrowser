@@ -12,3 +12,10 @@ view_browser(url)
 \description{
 View a browser (HTML) in the R viewer
 }
+\examples{
+url = create_browser(sotu_data$tokens, sotu_data$meta, token_col = 'token', header = 'Speeches')
+
+\donttest{
+view_browser(url)   ## view browser in the Viewer
+}
+}

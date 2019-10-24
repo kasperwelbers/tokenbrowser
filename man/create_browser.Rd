@@ -56,8 +56,9 @@ The name of the file where the browser is saved. Can be opened conveniently from
 Convert tokens into full texts in an HTML file
 }
 \examples{
-\dontrun{
 url = create_browser(sotu_data$tokens, sotu_data$meta, token_col = 'token', header = 'Speeches')
+
+\donttest{
 view_browser(url)   ## view browser in the Viewer
 browseURL(url)     ## view browser in default webbrowser
 }

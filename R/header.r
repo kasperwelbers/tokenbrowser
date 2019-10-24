@@ -6,7 +6,6 @@
 #' @param col2    The second style color (background color)
 #'
 #' @return A list with the html header and footer
-#' @export
 html_template <- function(template, css_str=NULL, col1="#7D1935", col2="#F5F3EE") {
   TEMPLATE = system.file(sprintf("template/%s.html", template), package="tokenbrowser", mustWork=T)
   html = readChar(TEMPLATE, file.info(TEMPLATE)$size)

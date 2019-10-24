@@ -39,4 +39,9 @@ tag_tokens(tokens = c('token_1','token_2', 'token_3'),
 tag_tokens(tokens = c('token_1','token_2', 'token_3'),
            class = c(1,NA,NA),
            style = attr_style(color = highlight_col(c(TRUE,TRUE,FALSE))))
+
+## span_adjacent can be used to put tokens with identical tags within one tag
+tag_tokens(tokens = c('token_1','token_2', 'token_3'),
+           class = c(1,1,NA),
+           span_adjacent=TRUE)
 }

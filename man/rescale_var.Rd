@@ -24,3 +24,7 @@ a numeric vector
 \description{
 Rescale a numeric variable
 }
+\examples{
+rescale_var(1:10)
+rescale_var(1:10, new_min = -1, new_max = 1)
+}

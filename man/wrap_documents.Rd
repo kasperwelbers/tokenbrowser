@@ -31,5 +31,10 @@ to the browser as document meta}
 A named vector, with document ids as names and the document html strings as values
 }
 \description{
-Wrap tokens into document html strings
+Pastes the tokens into articles, and returns an <article> html element.
+}
+\examples{
+docs = wrap_documents(sotu_data$tokens, sotu_data$meta)
+head(names(docs))
+docs[[1]]
 }

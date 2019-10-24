@@ -23,3 +23,16 @@ a character vector
 \description{
 Wrap values in an HTML tag
 }
+\examples{
+x = c("Obama","Bush")
+add_tag(x, 'span')
+
+## add attributes with the tag_attr function
+add_tag(x, 'span',
+        tag_attr(class = "president"))
+
+## add style attributes with the attr_style function within tag_attr
+add_tag(x, 'span',
+        tag_attr(class = "president",
+                 style = attr_style(`background-color` = 'rgba(255, 255, 0, 1)')))
+}

@@ -4,8 +4,8 @@
 \alias{category_highlight_tokens}
 \title{Highlight tokens per category}
 \usage{
-category_highlight_tokens(tokens, category, labels = labels,
-  alpha = 0.4, colors = NULL)
+category_highlight_tokens(tokens, category, labels = NULL, alpha = 0.4,
+  colors = NULL, span_adjacent = F)
 }
 \arguments{
 \item{tokens}{A character vector of tokens}
@@ -20,11 +20,16 @@ fully colored. This can be a vector to specify a different alpha for each value.
 \item{colors}{A character vector with color names for unique values of the value argument. Has to be the same length
 as unique(na.omit(category))}
 
-\item{...}{Extra arguments to be passed to tag_tokens (e.g. title)}
+\item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
 }
 \value{
 a character vector of color-tagged tokens
 }
 \description{
 This is a convenience wrapper for tag_tokens() that can be used if tokens need to be colored per category
+}
+\examples{
+tokens = c('token_1','token_2','token_3','token_4')
+category = c(1,1,NA,2)
+category_highlight_tokens(tokens, category)
 }

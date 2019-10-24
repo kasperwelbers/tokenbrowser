@@ -42,6 +42,8 @@ pretty_text_wrap <- function(x){
 
 #' Wrap tokens into document html strings
 #'
+#' Pastes the tokens into articles, and returns an <article> html element.
+#'
 #' @param tokens     A data.frame with a column for document ids (doc_col)
 #'                   and a column for tokens (token_col)
 #' @param meta       A data.frame with a column for document_ids (doc_col). All other columns are added
@@ -55,9 +57,12 @@ pretty_text_wrap <- function(x){
 #'
 #' @return A named vector, with document ids as names and the document html strings as values
 #' @export
+#' @examples
+#' docs = wrap_documents(sotu_data$tokens, sotu_data$meta)
+#' head(names(docs))
+#' docs[[1]]
 wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', nav=doc_col, token_nav=NULL, top_nav=NULL, thres_nav=NULL) {
   if (!methods::is(tokens, 'data.frame')) tokens = as.data.frame(tokens)
-
   doc_id = unique(tokens[[doc_col]])
   if (!is.null(meta)) {
     meta = as.data.frame(meta)

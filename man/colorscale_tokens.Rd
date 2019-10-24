@@ -5,7 +5,7 @@
 \title{Color tokens using colorRamp}
 \usage{
 colorscale_tokens(tokens, value, alpha = 0.4, col_range = c("red",
-  "blue"))
+  "blue"), span_adjacent = F)
 }
 \arguments{
 \item{tokens}{A character vector of tokens}
@@ -17,6 +17,8 @@ specified in col_range}
 fully colored. This can be a vector to specify a different alpha for each value.}
 
 \item{col_range}{The colors used in the scale ramp.}
+
+\item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
 }
 \value{
 a character vector of color-tagged tokens

@@ -29,6 +29,11 @@
 #' tag_tokens(tokens = c('token_1','token_2', 'token_3'),
 #'            class = c(1,NA,NA),
 #'            style = attr_style(color = highlight_col(c(TRUE,TRUE,FALSE))))
+#'
+#' ## span_adjacent can be used to put tokens with identical tags within one tag
+#' tag_tokens(tokens = c('token_1','token_2', 'token_3'),
+#'            class = c(1,1,NA),
+#'            span_adjacent=TRUE)
 tag_tokens <- function(tokens, tag='span', span_adjacent=F, ...) {
   attr_str = tag_attr(...)
   if (is.null(attr_str)) return(tokens)
@@ -38,6 +43,7 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, ...) {
          no = add_tag(as.character(tokens), tag, attr_str, span_adjacent = span_adjacent))
 
 }
+
 
 #' Highlight tokens
 #'
@@ -49,6 +55,7 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, ...) {
 #'                  If a numeric vector is used, the value determines the alpha (transparency), with 0 being fully transparent
 #'                  and 1 being fully colored.
 #' @param col       The color used to highlight
+#' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
 #'
 #' @return a character vector of color-tagged tokens
 #' @export
@@ -59,10 +66,11 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, ...) {
 #'
 #' highlight_tokens(c('token_1','token_2','token_3'),
 #'                  value = c(0,0.3,0.6))
-highlight_tokens <- function(tokens, value, col='yellow') {
+highlight_tokens <- function(tokens, value, col='yellow', span_adjacent=F) {
   col = highlight_col(value, col=col)
   tag_tokens(tokens,
-             style = attr_style(`background-color` = col))
+             style = attr_style(`background-color` = col),
+             span_adjacent=span_adjacent)
 }
 
 #' Color tokens using colorRamp
@@ -75,6 +83,7 @@ highlight_tokens <- function(tokens, value, col='yellow') {
 #' @param alpha      Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
 #'                   fully colored. This can be a vector to specify a different alpha for each value.
 #' @param col_range  The colors used in the scale ramp.
+#' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
 #'
 #' @return a character vector of color-tagged tokens
 #' @export
@@ -82,11 +91,12 @@ highlight_tokens <- function(tokens, value, col='yellow') {
 #' @examples
 #' colorscale_tokens(c('token_1','token_2','token_3'),
 #'                  value = c(-1,0,1))
-colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue')) {
-  col = scale_col(value, alpha=alpha, col_range = col_range)
+colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue'), span_adjacent=F) {
+  col = scale_col(value, alpha=alpha, col_range=col_range)
 
   tag_tokens(tokens,
-             style = attr_style(`background-color` = col))
+             style = attr_style(`background-color` = col),
+             span_adjacent=span_adjacent)
 }
 
 #' Highlight tokens per category
@@ -100,12 +110,24 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 #'                   fully colored. This can be a vector to specify a different alpha for each value.
 #' @param colors    A character vector with color names for unique values of the value argument. Has to be the same length
 #'                  as unique(na.omit(category))
-#' @param ...       Extra arguments to be passed to tag_tokens (e.g. title)
+#' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
 #'
 #' @return a character vector of color-tagged tokens
 #' @export
-category_highlight_tokens <- function(tokens, category, labels=labels, alpha=0.4, colors=NULL) {
+#' @examples
+#' tokens = c('token_1','token_2','token_3','token_4')
+#' category = c(1,1,NA,2)
+#' category_highlight_tokens(tokens, category)
+category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, colors=NULL, span_adjacent=F) {
   ncategories = length(unique(stats::na.omit(category)))
+
+  if (methods::is(category, 'character')) category = as.factor(category)
+  if (methods::is(category, 'numeric') && is.null(labels)) labels = unique(category)
+  if (methods::is(category, 'factor')) {
+    if (is.null(labels)) labels = levels(category)
+    category = as.numeric(category)
+  }
+
   if (is.null(colors)) colors = grDevices::rainbow(ncategories)
   if (!length(colors) == ncategories) stop(sprintf('The number of colors (%s) is not equal to the number of categories (%s)', length(colors), ncategories))
 
@@ -117,9 +139,8 @@ category_highlight_tokens <- function(tokens, category, labels=labels, alpha=0.4
   tokens = tag_tokens(tokens,
                       style = attr_style(`background-color` = col),
                       title = labels[category],
-                      span_adjacent=T)
+                      span_adjacent=span_adjacent)
   #tokens = tag_tokens(tokens, 'a', tag_attr(href = stringi::stri_paste('#nav', category, sep='')),
   #                    span_adjacent=T)
   tokens
 }
-

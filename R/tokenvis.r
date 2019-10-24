@@ -26,12 +26,15 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' url = create_browser(sotu_data$tokens, sotu_data$meta, token_col = 'token', header = 'Speeches')
+#'
+#' \donttest{
 #' view_browser(url)   ## view browser in the Viewer
 #' browseURL(url)     ## view browser in default webbrowser
 #' }
 create_browser <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, css_str=NULL, header='', subheader='', n=TRUE, navfilter=TRUE, top_nav=NULL, thres_nav=1, colors=NULL, style_col1="#7D1935", style_col2="#F5F3EE"){
+  tokens[[doc_col]] = factor(as.character(tokens[[doc_col]]), levels=unique(tokens[[doc_col]]))
+
   docs = wrap_documents(tokens, meta, doc_col, token_col, nav=doc_nav, token_nav = token_nav, top_nav=top_nav, thres_nav=thres_nav)
   docstring = stringi::stri_paste(docs, collapse='\n\n')
 
@@ -44,7 +47,7 @@ create_browser <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token
     nav = if (methods::is(meta[[doc_nav]], 'factor')) levels(meta[[doc_nav]]) else unique(meta[[doc_nav]])
   }
   if (!is.null(token_nav)) {
-    radio = if (top_nav == 1) T else F
+    radio = if (!is.null(top_nav) && top_nav == 1) T else F
     nav = if (methods::is(tokens[[token_nav]], 'factor')) levels(tokens[[token_nav]]) else unique(tokens[[token_nav]])
   }
   if (!is.null(nav)) nav = id_nav(nav, colors, navfilter, radio=radio)
@@ -87,23 +90,25 @@ create_browser <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token
 #' @param doc_nav   The name of a column in meta, used to set a navigation tag
 #' @param token_nav Alternative to doc_nav, a column in the tokens, used to set a navigation tag
 #' @param filename  Name of the output file. Default is temp file
+#' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
 #' @param ...       Additional formatting arguments passed to create_browser()
 #'
 #' @return The name of the file where the browser is saved. Can be opened conveniently from within R using browseUrl()
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' ## as an example, highlight words based on word length
 #' highlight = nchar(as.character(sotu_data$tokens$token))
 #' highlight = highlight / max(highlight)
 #' highlight[highlight < 0.3] = NA
 #' url = highlighted_browser(sotu_data$tokens, value = highlight, sotu_data$meta)
+#'
+#' \donttest{
 #' view_browser(url)   ## view browser in the Viewer
 #' browseURL(url)     ## view browser in default webbrowser
 #' }
-highlighted_browser <- function(tokens, value, meta=NULL, col='yellow', doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, ...){
-  tokens[[token_col]] = highlight_tokens(tokens[[token_col]], value=value, col = col)
+highlighted_browser <- function(tokens, value, meta=NULL, col='yellow', doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, span_adjacent=T, ...){
+  tokens[[token_col]] = highlight_tokens(tokens[[token_col]], value=value, col = col, span_adjacent = span_adjacent)
   create_browser(tokens, meta, doc_col, token_col, doc_nav=doc_nav, token_nav=token_nav, filename=filename, ...)
 }
 
@@ -124,24 +129,26 @@ highlighted_browser <- function(tokens, value, meta=NULL, col='yellow', doc_col=
 #' @param doc_nav   The name of a column in meta, used to set a navigation tag
 #' @param token_nav Alternative to doc_nav, a column in the tokens, used to set a navigation tag
 #' @param filename  Name of the output file. Default is temp file
+#' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
 #' @param ...       Additional formatting arguments passed to create_browser()
 #'
 #' @return The name of the file where the browser is saved. Can be opened conveniently from within R using browseUrl()
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' ## as an example, scale word colors based on number of characters
 #' scale = nchar(as.character(sotu_data$tokens$token))
 #' scale[scale>6] = scale[scale>6] +20
 #' scale = rescale_var(sqrt(scale), -1, 1)
 #' scale[abs(scale) < 0.5] = NA
 #' url = colorscaled_browser(sotu_data$tokens, value = scale, meta=sotu_data$meta)
+#'
+#' \donttest{
 #' view_browser(url)   ## view browser in the Viewer
 #' browseURL(url)     ## view browser in default webbrowser
 #' }
-colorscaled_browser <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c('red','blue'), doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, ...){
-  tokens[[token_col]] = colorscale_tokens(tokens[[token_col]], value=value, col_range = col_range, alpha=alpha)
+colorscaled_browser <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c('red','blue'), doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, span_adjacent=T, ...){
+  tokens[[token_col]] = colorscale_tokens(tokens=tokens[[token_col]], value=value, col_range = col_range, alpha=alpha, span_adjacent = span_adjacent)
   create_browser(tokens, meta, doc_col, token_col, doc_nav=doc_nav, token_nav=token_nav, filename=filename, ...)
 }
 
@@ -163,27 +170,30 @@ colorscaled_browser <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c
 #' @param doc_col   The name of the document id column
 #' @param token_col The name of the token column
 #' @param filename  Name of the output file. Default is temp file
+#' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
 #' @param ...       Additional formatting arguments passed to create_browser()
 #'
 #' @return The name of the file where the browser is saved. Can be opened conveniently from within R using browseUrl()
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' ## as an example, use part of speech tags as categories
-#' category = match(sotu_data$tokens$pos, c('N','M','V'))
+#' ## as an example, use simple grep to code tokens
+#' code = rep(NA, nrow(sotu_data$tokens))
+#' code[grep('war', sotu_data$tokens$token)] = 'War'
+#' code[grep('mother|father|child', sotu_data$tokens$token)] = 'Family'
+#' code = as.factor(code)
+#' url = categorical_browser(sotu_data$tokens, category=code, meta=sotu_data$meta)
 #'
-#' ## this approach organizes documents by the most frequent category
-#' url = highlighted_browser(sotu_data$tokens, value = highlight, sotu_data$meta)
-#'
+#' \donttest{
 #' view_browser(url)   ## view browser in the Viewer
 #' browseURL(url)     ## view browser in default webbrowser
 #' }
-categorical_browser <- function(tokens, category, alpha=0.3, labels=NULL, meta=NULL, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, ...){
+categorical_browser <- function(tokens, category, alpha=0.3, labels=NULL, meta=NULL, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, span_adjacent=T, ...){
   if (methods::is(category, 'character')) category = as.factor(category)
-  if (methods::is(category, 'numeric') && is.null(labels)) labels = unique(category)
+  if (methods::is(category, 'numeric') && is.null(labels)) labels = stats::na.omit(unique(category))
   if (methods::is(category, 'factor')) {
-    if (is.null(labels)) labels = levels(category)
+    category = droplevels(category)
+    if (is.null(labels)) labels = stats::na.omit(levels(category))
     category = as.numeric(category)
   }
 
@@ -191,13 +201,10 @@ categorical_browser <- function(tokens, category, alpha=0.3, labels=NULL, meta=N
     meta = data.frame(doc_id = tokens[[doc_col]])
     colnames(meta) = doc_col
   }
-
   if (is.null(colors)) colors = grDevices::rainbow(length(unique(stats::na.omit(category))))
 
-  tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, labels=labels, alpha=alpha, colors = colors)
+  tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, labels=labels, alpha=alpha, colors = colors, span_adjacent = span_adjacent)
   tokens[['multi_cat']] = factor(category, labels=labels)
   create_browser(tokens, meta, doc_col, token_col, token_nav='multi_cat', filename= filename, colors=colors, ...)
 }
-
-
 

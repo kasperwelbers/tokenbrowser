@@ -13,9 +13,9 @@ create_topicbrowser <- function(tokens, word_assignments, term_topic, doc_topic,
   #}
 }
 
-create_browser <- function(tokens, topic, meta, doc_col, token_col){
-  NULL
-}
+#create_browser <- function(tokens, topic, meta, doc_col, token_col){
+#  NULL
+#}
 
 match_word_assignments <- function(tokens, word_assignments, topic_docs, doc_col, feature_col) {
   doc_filter = unlist(topic_docs)

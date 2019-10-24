@@ -9,6 +9,18 @@
 #' @export
 #'
 #' @return a character vector
+#' @examples
+#' x = c("Obama","Bush")
+#' add_tag(x, 'span')
+#'
+#' ## add attributes with the tag_attr function
+#' add_tag(x, 'span',
+#'         tag_attr(class = "president"))
+#'
+#' ## add style attributes with the attr_style function within tag_attr
+#' add_tag(x, 'span',
+#'         tag_attr(class = "president",
+#'                  style = attr_style(`background-color` = 'rgba(255, 255, 0, 1)')))
 add_tag <- function(x, tag, attr_str=NULL, ignore_na=F, span_adjacent=F) {
   if (!is.null(attr_str)) {
     attr_str = ifelse(is.na(attr_str), yes = if (ignore_na) NA else '',
@@ -36,6 +48,9 @@ add_tag <- function(x, tag, attr_str=NULL, ignore_na=F, span_adjacent=F) {
 #'
 #' @return a character vector where each value contains a string for an html table.
 #' @export
+#' @examples
+#' tabs = create_meta_tables(sotu_data$meta)
+#' tabs[1]
 create_meta_tables <- function(meta, ignore_col=NULL) {
   if (ncol(meta) > 0) {
     html_table = ''

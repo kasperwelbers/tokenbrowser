@@ -4,7 +4,7 @@
 \alias{highlight_tokens}
 \title{Highlight tokens}
 \usage{
-highlight_tokens(tokens, value, col = "yellow")
+highlight_tokens(tokens, value, col = "yellow", span_adjacent = F)
 }
 \arguments{
 \item{tokens}{A character vector of tokens}
@@ -15,6 +15,8 @@ If a numeric vector is used, the value determines the alpha (transparency), with
 and 1 being fully colored.}
 
 \item{col}{The color used to highlight}
+
+\item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
 }
 \value{
 a character vector of color-tagged tokens

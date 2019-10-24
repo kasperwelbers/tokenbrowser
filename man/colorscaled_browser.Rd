@@ -7,7 +7,7 @@
 colorscaled_browser(tokens, value, alpha = 0.4, meta = NULL,
   col_range = c("red", "blue"), doc_col = "doc_id",
   token_col = "token", doc_nav = NULL, token_nav = NULL,
-  filename = NULL, ...)
+  filename = NULL, span_adjacent = T, ...)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)
@@ -35,6 +35,8 @@ to the browser as document meta}
 
 \item{filename}{Name of the output file. Default is temp file}
 
+\item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
+
 \item{...}{Additional formatting arguments passed to create_browser()}
 }
 \value{
@@ -44,13 +46,14 @@ The name of the file where the browser is saved. Can be opened conveniently from
 Convert tokens into full texts in an HTML file with color ramp highlighting
 }
 \examples{
-\dontrun{
 ## as an example, scale word colors based on number of characters
 scale = nchar(as.character(sotu_data$tokens$token))
 scale[scale>6] = scale[scale>6] +20
 scale = rescale_var(sqrt(scale), -1, 1)
 scale[abs(scale) < 0.5] = NA
 url = colorscaled_browser(sotu_data$tokens, value = scale, meta=sotu_data$meta)
+
+\donttest{
 view_browser(url)   ## view browser in the Viewer
 browseURL(url)     ## view browser in default webbrowser
 }

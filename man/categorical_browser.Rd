@@ -6,7 +6,7 @@
 \usage{
 categorical_browser(tokens, category, alpha = 0.3, labels = NULL,
   meta = NULL, colors = NULL, doc_col = "doc_id",
-  token_col = "token", filename = NULL, ...)
+  token_col = "token", filename = NULL, span_adjacent = T, ...)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)
@@ -34,6 +34,8 @@ as unique(na.omit(category))}
 
 \item{filename}{Name of the output file. Default is temp file}
 
+\item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
+
 \item{...}{Additional formatting arguments passed to create_browser()}
 }
 \value{
@@ -43,13 +45,14 @@ The name of the file where the browser is saved. Can be opened conveniently from
 Convert tokens into full texts in an HTML file with category highlighting
 }
 \examples{
-\dontrun{
-## as an example, use part of speech tags as categories
-category = match(sotu_data$tokens$pos, c('N','M','V'))
+## as an example, use simple grep to code tokens
+code = rep(NA, nrow(sotu_data$tokens))
+code[grep('war', sotu_data$tokens$token)] = 'War'
+code[grep('mother|father|child', sotu_data$tokens$token)] = 'Family'
+code = as.factor(code)
+url = categorical_browser(sotu_data$tokens, category=code, meta=sotu_data$meta)
 
-## this approach organizes documents by the most frequent category
-url = highlighted_browser(sotu_data$tokens, value = highlight, sotu_data$meta)
-
+\donttest{
 view_browser(url)   ## view browser in the Viewer
 browseURL(url)     ## view browser in default webbrowser
 }
