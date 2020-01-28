@@ -57,7 +57,9 @@ create_meta_tables <- function(meta, ignore_col=NULL) {
     for (col in colnames(meta)) {
       if (col == 'NAVIGATION_STRING') next
       if (col %in% ignore_col) next
-      html_table = stringi::stri_paste('\n', html_table, '<tr><th>', col, '</th><td>', as.character(meta[[col]]), '</td></tr>')
+      colval = as.character(meta[[col]])
+      colval[is.na(colval)] = ''
+      html_table = stringi::stri_paste('\n', html_table, '<tr><th>', col, '</th><td>', colval, '</td></tr>')
     }
     add_tag(html_table, 'table', tag_attr(class='meta_table', style=attr_style(`border-spacing`= '0px')))
   } else ''

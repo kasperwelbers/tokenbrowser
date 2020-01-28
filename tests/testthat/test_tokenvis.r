@@ -3,8 +3,9 @@ test_that("tokenbrowser", {
 
   ## simple
   d$tokens
+  d$meta$test = NA
   url = create_browser(d$tokens, d$meta, token_col = 'token', header = 'Speeches')
-  #view_browser(url)
+  view_browser(url)
 
   ## simple with navigation
   url = create_browser(d$tokens, d$meta, token_col = 'token', header = 'Speeches', doc_nav = 'headline')
@@ -32,13 +33,13 @@ test_that("tokenbrowser", {
   code[grep('mother|father|child', sotu_data$tokens$token)] = 'Family'
   code = as.factor(code)
   url = categorical_browser(sotu_data$tokens, category=(code), meta=sotu_data$meta)
-  view_browser(url)
+  #view_browser(url)
 
   ## categories (using top_nav)
   category = match(sotu_data$tokens$pos, c('N','M','V'))
   category[sotu_data$tokens$doc_id == unique(sotu_data$tokens$doc_id)[2]] = NA ## add empty document for test
   url = categorical_browser(sotu_data$tokens, category=category, labels=c('N','M','V'), meta=sotu_data$meta, top_nav=2)
-  view_browser(url)
+  #view_browser(url)
 
 
 })

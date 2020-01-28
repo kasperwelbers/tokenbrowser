@@ -1,7 +1,6 @@
 create_doc_headers <- function(meta, doc_col='doc_id', nav=doc_col) {
   title = add_tag(meta[[doc_col]], 'doc_id')
 
-
   if (!is.null(nav)) {
     navtags = add_tag(nav, 'div', tag_attr(style=attr_style(display="none")))
     meta = create_meta_tables(meta, ignore_col = doc_col)
@@ -79,7 +78,6 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', na
     nav = if (is.null(nav)) NULL else sprintf('<tag>%s</tag>', meta[[nav]])
     header = create_doc_headers(meta, doc_col = doc_col, nav= nav)
   }
-
   texts = wrap_tokens(tokens, doc_col=doc_col, token_col=token_col)
   docs = stringi::stri_paste(header, texts, sep='\n')
 

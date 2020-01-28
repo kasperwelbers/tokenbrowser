@@ -1,7 +1,7 @@
 Package: tokenbrowser
 Type: Package
 Title: Create Full Text Browsers from Annotated Token Lists
-Version: 0.1.0
+Version: 0.1.2
 Author: Kasper Welbers and Wouter van Atteveldt
 Maintainer: Kasper Welbers <kasperwelbers@gmail.com>
 License: GPL-3
