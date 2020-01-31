@@ -88,7 +88,6 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', na
   }
 
   texts = wrap_tokens(tokens, doc_col=doc_col, token_col=token_col)
-  print(texts)
   docs = stringi::stri_paste(header, texts, sep='\n')
 
   docs = add_tag(docs, 'article', tag_attr(insearch="1",infilter="1"))
