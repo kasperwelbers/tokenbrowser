@@ -4,8 +4,13 @@
 \alias{colorscale_tokens}
 \title{Color tokens using colorRamp}
 \usage{
-colorscale_tokens(tokens, value, alpha = 0.4, col_range = c("red",
-  "blue"), span_adjacent = F)
+colorscale_tokens(
+  tokens,
+  value,
+  alpha = 0.4,
+  col_range = c("red", "blue"),
+  span_adjacent = F
+)
 }
 \arguments{
 \item{tokens}{A character vector of tokens}

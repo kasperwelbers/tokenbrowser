@@ -4,10 +4,20 @@
 \alias{colorscaled_browser}
 \title{Convert tokens into full texts in an HTML file with color ramp highlighting}
 \usage{
-colorscaled_browser(tokens, value, alpha = 0.4, meta = NULL,
-  col_range = c("red", "blue"), doc_col = "doc_id",
-  token_col = "token", doc_nav = NULL, token_nav = NULL,
-  filename = NULL, span_adjacent = T, ...)
+colorscaled_browser(
+  tokens,
+  value,
+  alpha = 0.4,
+  meta = NULL,
+  col_range = c("red", "blue"),
+  doc_col = "doc_id",
+  token_col = "token",
+  doc_nav = NULL,
+  token_nav = NULL,
+  filename = NULL,
+  span_adjacent = T,
+  ...
+)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)

@@ -1,7 +1,7 @@
 Package: tokenbrowser
 Type: Package
 Title: Create Full Text Browsers from Annotated Token Lists
-Version: 0.1.2
+Version: 0.1.3
 Author: Kasper Welbers and Wouter van Atteveldt
 Maintainer: Kasper Welbers <kasperwelbers@gmail.com>
 License: GPL-3
@@ -20,4 +20,4 @@ Description: Create browsers for reading full texts from a token list format.
     can be used to annotate the texts.
 SystemRequirements: C++11
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

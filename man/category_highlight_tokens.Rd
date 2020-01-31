@@ -4,8 +4,14 @@
 \alias{category_highlight_tokens}
 \title{Highlight tokens per category}
 \usage{
-category_highlight_tokens(tokens, category, labels = NULL, alpha = 0.4,
-  colors = NULL, span_adjacent = F)
+category_highlight_tokens(
+  tokens,
+  category,
+  labels = NULL,
+  alpha = 0.4,
+  colors = NULL,
+  span_adjacent = F
+)
 }
 \arguments{
 \item{tokens}{A character vector of tokens}

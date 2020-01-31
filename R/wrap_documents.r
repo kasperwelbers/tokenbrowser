@@ -19,11 +19,18 @@ wrap_tokens <- function(tokens, doc_col='doc_id', token_col='token'){
     }
     tokens[[token_col]][is.na(tokens[[token_col]])] = ''
   }
-  text = split(tokens[[token_col]], f = tokens[[doc_col]])
+
+  ## quick hack because split sorts by f. needs more efficient solution
+  i = match(tokens[[doc_col]], unique(tokens[[doc_col]]))
+
+  text = split(tokens[[token_col]], f = i)
   text = stringi::stri_paste_list(text, sep=' ')
   text = gsub('\\n', '<br>', text)
   sprintf('<p>%s</p>', pretty_text_wrap(text))
 }
+
+
+
 
 pretty_text_wrap <- function(x){
   x = gsub('_| ', ' ', x)
@@ -71,6 +78,7 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', na
     colnames(meta) = doc_col
   }
 
+
   if (!is.null(token_nav)) {
     nav = token_nav_string(tokens, meta, doc_col, token_nav, top_nav, thres_nav)
     header = create_doc_headers(meta, doc_col = doc_col, nav=nav)
@@ -78,7 +86,9 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', na
     nav = if (is.null(nav)) NULL else sprintf('<tag>%s</tag>', meta[[nav]])
     header = create_doc_headers(meta, doc_col = doc_col, nav= nav)
   }
+
   texts = wrap_tokens(tokens, doc_col=doc_col, token_col=token_col)
+  print(texts)
   docs = stringi::stri_paste(header, texts, sep='\n')
 
   docs = add_tag(docs, 'article', tag_attr(insearch="1",infilter="1"))
@@ -86,4 +96,3 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', na
 
   docs
 }
-

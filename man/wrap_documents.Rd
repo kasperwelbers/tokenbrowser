@@ -4,9 +4,16 @@
 \alias{wrap_documents}
 \title{Wrap tokens into document html strings}
 \usage{
-wrap_documents(tokens, meta, doc_col = "doc_id", token_col = "token",
-  nav = doc_col, token_nav = NULL, top_nav = NULL,
-  thres_nav = NULL)
+wrap_documents(
+  tokens,
+  meta,
+  doc_col = "doc_id",
+  token_col = "token",
+  nav = doc_col,
+  token_nav = NULL,
+  top_nav = NULL,
+  thres_nav = NULL
+)
 }
 \arguments{
 \item{tokens}{A data.frame with a column for document ids (doc_col)

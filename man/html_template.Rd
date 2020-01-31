@@ -4,8 +4,7 @@
 \alias{html_template}
 \title{create the html template}
 \usage{
-html_template(template, css_str = NULL, col1 = "#7D1935",
-  col2 = "#F5F3EE")
+html_template(template, css_str = NULL, col1 = "#7D1935", col2 = "#F5F3EE")
 }
 \arguments{
 \item{template}{The name of the template to be used}
