@@ -104,7 +104,7 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 #' This is a convenience wrapper for tag_tokens() that can be used if tokens need to be colored per category
 #'
 #' @param tokens    A character vector of tokens
-#' @param category  A numeric vector with values representing category indices.
+#' @param category  Either a factor, or a numeric vector with values representing category indices. If a numeric vector is used, labels must also be given
 #' @param labels    A character vector with labels for the categories
 #' @param alpha      Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
 #'                   fully colored. This can be a vector to specify a different alpha for each value.
@@ -116,13 +116,16 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 #' @export
 #' @examples
 #' tokens = c('token_1','token_2','token_3','token_4')
-#' category = c(1,1,NA,2)
+#' category = c('a','a',NA,'b')
 #' category_highlight_tokens(tokens, category)
 category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, colors=NULL, span_adjacent=F) {
   ncategories = length(unique(stats::na.omit(category)))
 
-  if (methods::is(category, 'character')) category = as.factor(category)
-  if (methods::is(category, 'numeric') && is.null(labels)) labels = unique(category)
+  if (methods::is(category, 'character')) category = factor(category, labels=na.omit(unique(category)))
+  if (methods::is(category, 'numeric')) {
+    if (is.null(labels)) stop('If category is numeric, labels must be provided')
+    if (max(category, na.rm = T) > length(labels)) stop('The maximum category value is higher than the number of labels')
+  }
   if (methods::is(category, 'factor')) {
     if (is.null(labels)) labels = levels(category)
     category = as.numeric(category)
