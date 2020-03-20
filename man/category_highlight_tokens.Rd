@@ -16,7 +16,7 @@ category_highlight_tokens(
 \arguments{
 \item{tokens}{A character vector of tokens}
 
-\item{category}{A numeric vector with values representing category indices.}
+\item{category}{Either a factor, or a numeric vector with values representing category indices. If a numeric vector is used, labels must also be given}
 
 \item{labels}{A character vector with labels for the categories}
 
@@ -36,6 +36,6 @@ This is a convenience wrapper for tag_tokens() that can be used if tokens need t
 }
 \examples{
 tokens = c('token_1','token_2','token_3','token_4')
-category = c(1,1,NA,2)
+category = c('a','a',NA,'b')
 category_highlight_tokens(tokens, category)
 }

@@ -121,7 +121,7 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, colors=NULL, span_adjacent=F) {
   ncategories = length(unique(stats::na.omit(category)))
 
-  if (methods::is(category, 'character')) category = factor(category, labels=na.omit(unique(category)))
+  if (methods::is(category, 'character')) category = factor(category, labels=stats::na.omit(unique(category)))
   if (methods::is(category, 'numeric')) {
     if (is.null(labels)) stop('If category is numeric, labels must be provided')
     if (max(category, na.rm = T) > length(labels)) stop('The maximum category value is higher than the number of labels')
