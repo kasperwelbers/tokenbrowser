@@ -14,6 +14,7 @@ highlighted_browser(
   doc_nav = NULL,
   token_nav = NULL,
   filename = NULL,
+  unfold = NULL,
   span_adjacent = T,
   ...
 )
@@ -42,6 +43,9 @@ to the browser as document meta}
 \item{token_nav}{Alternative to doc_nav, a column in the tokens, used to set a navigation tag}
 
 \item{filename}{Name of the output file. Default is temp file}
+
+\item{unfold}{Either a character vector or a named list of vectors of the same length as tokens. If given, all tokens with a tag can be clicked on to unfold the given text. If a list of vectors is given,
+the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].}
 
 \item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
 

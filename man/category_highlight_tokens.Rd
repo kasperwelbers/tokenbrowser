@@ -10,6 +10,7 @@ category_highlight_tokens(
   labels = NULL,
   alpha = 0.4,
   colors = NULL,
+  unfold = NULL,
   span_adjacent = F
 )
 }
@@ -25,6 +26,10 @@ fully colored. This can be a vector to specify a different alpha for each value.
 
 \item{colors}{A character vector with color names for unique values of the value argument. Has to be the same length
 as unique(na.omit(category))}
+
+\item{unfold}{Either a character vector or a named list of vectors of the same length as tokens. If given, all tokens with a tag can be clicked on to unfold the given text. If a list of vectors is given,
+ the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
+This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).}
 
 \item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
 }

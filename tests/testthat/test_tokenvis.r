@@ -17,6 +17,7 @@ test_that("tokenbrowser", {
   highlight = round(highlight / max(highlight), 1)
   highlight[highlight < 0.3] = NA
   url = highlighted_browser(sotu_data$tokens, value = highlight, sotu_data$meta)
+  view_browser(url)
   testthat::expect_true(file.exists(url))
 
   ## scales

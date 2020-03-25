@@ -33,7 +33,7 @@ wrap_tokens <- function(tokens, doc_col='doc_id', token_col='token'){
 
 
 pretty_text_wrap <- function(x){
-  x = gsub('_| ', ' ', x)
+  x = gsub(' ', ' ', x)
   x = gsub(" ([.,?!:;>)])", '\\1', x)
   x = gsub('([(<]) ', '\\1', x)
   x

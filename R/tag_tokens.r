@@ -11,6 +11,9 @@
 #' @param tokens  a vector of tokens.
 #' @param tag     The name of the tag to be used
 #' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
+#' @param unfold  Either a character vector or a named list of vectors of the same length as tokens. If given, all tokens with a tag can be clicked on to unfold the given text. If a list of vectors is given,
+#'                the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
+#'                This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).
 #' @param ...     named arguments are used as attributes in the span tag for each token, with the name being the name
 #'                of the attribute (e.g., class, . Each argument must be a vector of the same length as the number of tokens.
 #'                NA values can be used to ignore attribute for a token, and if a token has NA for each attribute,
@@ -34,14 +37,33 @@
 #' tag_tokens(tokens = c('token_1','token_2', 'token_3'),
 #'            class = c(1,1,NA),
 #'            span_adjacent=TRUE)
-tag_tokens <- function(tokens, tag='span', span_adjacent=F, ...) {
+tag_tokens <- function(tokens, tag='span', span_adjacent=F, unfold=NULL, ...) {
   attr_str = tag_attr(...)
   if (is.null(attr_str)) return(tokens)
   if (length(attr_str) == 1) attr_str = rep(attr_str, length(tokens))
-  ifelse(attr_str == '',
-         yes = as.character(tokens), ## if a tokens has no attributes, do not add a span tag.
-         no = add_tag(as.character(tokens), tag, attr_str, span_adjacent = span_adjacent))
 
+  has_attr = attr_str != ''
+  tokens = ifelse(!has_attr,
+                  yes = as.character(tokens), ## if a token has no attributes, do not add a span tag.
+                  no = add_tag(as.character(tokens), tag, attr_str, span_adjacent = span_adjacent))
+
+  if (!is.null(unfold)) {
+    n = length(tokens)
+    if (class(unfold) %in% c('data.frame','list')) {
+      for (j in seq_along(unfold)) {
+        if (length(unfold[[j]]) != n) stop(sprintf('The vector %s in unfold is not of the same length as the number of tokens', names(unfold)[j]))
+        v = unfold[[j]][has_attr]
+        if (class(v) %in% c('factor','character')) v = paste0('"', v, '"')
+        if (j == 1) unfold_string = paste(names(unfold)[j], v, sep=' = ')
+        if (j > 1) unfold_string = paste(unfold_string, paste(names(unfold)[j], v, sep=' = '), sep=', ')
+      }
+    } else {
+      if (length(unfold) != n) stop('the unfold vector is not of the same length as the number of tokens')
+      unfold_string = unfold[has_attr]
+    }
+    tokens[has_attr] = sprintf('<unfoldspan>%s</unfoldspan><font style="display:none;" color="blue"> [%s]</font>', tokens[has_attr], unfold_string)
+  }
+  tokens
 }
 
 
@@ -55,6 +77,9 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, ...) {
 #'                  If a numeric vector is used, the value determines the alpha (transparency), with 0 being fully transparent
 #'                  and 1 being fully colored.
 #' @param col       The color used to highlight
+#' @param unfold  Either a character vector or a named list of vectors of the same length as tokens. If given, all tokens with a tag can be clicked on to unfold the given text. If a list of vectors is given,
+#'                the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
+#'                This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).
 #' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
 #'
 #' @return a character vector of color-tagged tokens
@@ -66,11 +91,13 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, ...) {
 #'
 #' highlight_tokens(c('token_1','token_2','token_3'),
 #'                  value = c(0,0.3,0.6))
-highlight_tokens <- function(tokens, value, col='yellow', span_adjacent=F) {
+highlight_tokens <- function(tokens, value, col='yellow', unfold=NULL, span_adjacent=F) {
   col = highlight_col(value, col=col)
-  tag_tokens(tokens,
+  tokens = tag_tokens(tokens,
              style = attr_style(`background-color` = col),
+             unfold = unfold,
              span_adjacent=span_adjacent)
+  tokens
 }
 
 #' Color tokens using colorRamp
@@ -83,6 +110,9 @@ highlight_tokens <- function(tokens, value, col='yellow', span_adjacent=F) {
 #' @param alpha      Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
 #'                   fully colored. This can be a vector to specify a different alpha for each value.
 #' @param col_range  The colors used in the scale ramp.
+#' @param unfold  Either a character vector or a named list of vectors of the same length as tokens. If given, all tokens with a tag can be clicked on to unfold the given text. If a list of vectors is given,
+#'                the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
+#'                This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).
 #' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
 #'
 #' @return a character vector of color-tagged tokens
@@ -91,11 +121,12 @@ highlight_tokens <- function(tokens, value, col='yellow', span_adjacent=F) {
 #' @examples
 #' colorscale_tokens(c('token_1','token_2','token_3'),
 #'                  value = c(-1,0,1))
-colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue'), span_adjacent=F) {
+colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue'), unfold=NULL, span_adjacent=F) {
   col = scale_col(value, alpha=alpha, col_range=col_range)
 
   tag_tokens(tokens,
              style = attr_style(`background-color` = col),
+             unfold=unfold,
              span_adjacent=span_adjacent)
 }
 
@@ -110,6 +141,9 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 #'                   fully colored. This can be a vector to specify a different alpha for each value.
 #' @param colors    A character vector with color names for unique values of the value argument. Has to be the same length
 #'                  as unique(na.omit(category))
+#' @param unfold   Either a character vector or a named list of vectors of the same length as tokens. If given, all tokens with a tag can be clicked on to unfold the given text. If a list of vectors is given,
+#'                 the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
+#'                This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).
 #' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
 #'
 #' @return a character vector of color-tagged tokens
@@ -118,7 +152,7 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 #' tokens = c('token_1','token_2','token_3','token_4')
 #' category = c('a','a',NA,'b')
 #' category_highlight_tokens(tokens, category)
-category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, colors=NULL, span_adjacent=F) {
+category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, colors=NULL, unfold=NULL, span_adjacent=F) {
   ncategories = length(unique(stats::na.omit(category)))
 
   if (methods::is(category, 'character')) category = factor(category, labels=stats::na.omit(unique(category)))
@@ -142,6 +176,7 @@ category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, 
   tokens = tag_tokens(tokens,
                       style = attr_style(`background-color` = col),
                       title = labels[category],
+                      unfold=unfold,
                       span_adjacent=span_adjacent)
   #tokens = tag_tokens(tokens, 'a', tag_attr(href = stringi::stri_paste('#nav', category, sep='')),
   #                    span_adjacent=T)

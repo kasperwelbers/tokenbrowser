@@ -30,6 +30,8 @@
     </div>
 
     </div>
+
+
   </body>
 </html>
 
@@ -113,5 +115,21 @@ function navSelect(checkbox) {
   document.getElementsByTagName('ndoc')[0].innerHTML = n;
 }
 
+var unfoldspan = document.querySelectorAll("unfoldspan");
+
+for (i = 0; i < unfoldspan.length; i++) {
+  unfoldspan[i].onclick = function() {
+  //window.confirm(this.textContent)
+
+    if (!this.hasAttribute('unfolded')) this.setAttribute('unfolded', false)
+    if (this.unfolded) {
+      this.nextSibling.style.display = 'none'
+      this.unfolded = false
+    } else {
+      this.nextSibling.style.display = ''
+      this.unfolded = true
+    }
+  }
+}
 
 </script>
