@@ -49,13 +49,14 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, unfold=NULL, ...) {
 
   if (!is.null(unfold)) {
     n = length(tokens)
-    if (class(unfold) %in% c('data.frame','list')) {
+
+    if (methods::is(unfold, 'data.frame') | methods::is(unfold,'list')) {
       for (j in seq_along(unfold)) {
-        if (length(unfold[[j]]) != n) stop(sprintf('The vector %s in unfold is not of the same length as the number of tokens', names(unfold)[j]))
-        v = unfold[[j]][has_attr]
-        if (class(v) %in% c('factor','character')) v = paste0('"', v, '"')
-        if (j == 1) unfold_string = paste(names(unfold)[j], v, sep=' = ')
-        if (j > 1) unfold_string = paste(unfold_string, paste(names(unfold)[j], v, sep=' = '), sep=', ')
+        v = unfold[[j]]
+        if (methods::is(v, 'factor') | methods::is(v, 'character')) v = paste0('"', v, '"')
+        if (length(v) != n) stop(sprintf('The vector %s in unfold is not of the same length as the number of tokens', names(unfold)[j]))
+        if (j == 1) unfold_string = paste(names(unfold)[j], v[has_attr], sep=' = ')
+        if (j > 1) unfold_string = paste(unfold_string, paste(names(unfold)[j], v[has_attr], sep=' = '), sep=', ')
       }
     } else {
       if (length(unfold) != n) stop('the unfold vector is not of the same length as the number of tokens')
