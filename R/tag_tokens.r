@@ -11,6 +11,7 @@
 #' @param tokens  a vector of tokens.
 #' @param tag     The name of the tag to be used
 #' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
+#' @param doc_id  If span_adjacent is TRUE, The document ids are required to ensure that tags do not span from one document to another.
 #' @param unfold  Either a character vector or a named list of vectors of the same length as tokens. If given, all tokens with a tag can be clicked on to unfold the given text. If a list of vectors is given,
 #'                the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
 #'                This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).
@@ -34,18 +35,20 @@
 #'            style = attr_style(color = highlight_col(c(TRUE,TRUE,FALSE))))
 #'
 #' ## span_adjacent can be used to put tokens with identical tags within one tag
+#' ## but then a doc_id has to be given as well
 #' tag_tokens(tokens = c('token_1','token_2', 'token_3'),
 #'            class = c(1,1,NA),
-#'            span_adjacent=TRUE)
-tag_tokens <- function(tokens, tag='span', span_adjacent=F, unfold=NULL, ...) {
+#'            span_adjacent=TRUE,
+#'            doc_id = c(1,1,1))
+tag_tokens <- function(tokens, tag='span', span_adjacent=F, doc_id=NULL, unfold=NULL, ...) {
   attr_str = tag_attr(...)
   if (is.null(attr_str)) return(tokens)
   if (length(attr_str) == 1) attr_str = rep(attr_str, length(tokens))
 
-  has_attr = attr_str != ''
+ has_attr = attr_str != ''
   tokens = ifelse(!has_attr,
                   yes = as.character(tokens), ## if a token has no attributes, do not add a span tag.
-                  no = add_tag(as.character(tokens), tag, attr_str, span_adjacent = span_adjacent))
+                  no = add_tag(as.character(tokens), tag, attr_str, span_adjacent = span_adjacent, doc_id=doc_id))
 
   if (!is.null(unfold)) {
     n = length(tokens)
@@ -82,6 +85,8 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, unfold=NULL, ...) {
 #'                the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
 #'                This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).
 #' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
+#' @param doc_id  If span_adjacent is TRUE, The document ids are required to ensure that tags do not span from one document to another.
+#'
 #'
 #' @return a character vector of color-tagged tokens
 #' @export
@@ -92,12 +97,12 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, unfold=NULL, ...) {
 #'
 #' highlight_tokens(c('token_1','token_2','token_3'),
 #'                  value = c(0,0.3,0.6))
-highlight_tokens <- function(tokens, value, col='yellow', unfold=NULL, span_adjacent=F) {
+highlight_tokens <- function(tokens, value, col='yellow', unfold=NULL, span_adjacent=F, doc_id=NULL) {
   col = highlight_col(value, col=col)
   tokens = tag_tokens(tokens,
              style = attr_style(`background-color` = col),
              unfold = unfold,
-             span_adjacent=span_adjacent)
+             span_adjacent=span_adjacent, doc_id=doc_id)
   tokens
 }
 
@@ -115,6 +120,7 @@ highlight_tokens <- function(tokens, value, col='yellow', unfold=NULL, span_adja
 #'                the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
 #'                This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).
 #' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
+#' @param doc_id  If span_adjacent is TRUE, The document ids are required to ensure that tags do not span from one document to another.
 #'
 #' @return a character vector of color-tagged tokens
 #' @export
@@ -122,13 +128,13 @@ highlight_tokens <- function(tokens, value, col='yellow', unfold=NULL, span_adja
 #' @examples
 #' colorscale_tokens(c('token_1','token_2','token_3'),
 #'                  value = c(-1,0,1))
-colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue'), unfold=NULL, span_adjacent=F) {
+colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue'), unfold=NULL, span_adjacent=F, doc_id=NULL) {
   col = scale_col(value, alpha=alpha, col_range=col_range)
 
   tag_tokens(tokens,
              style = attr_style(`background-color` = col),
              unfold=unfold,
-             span_adjacent=span_adjacent)
+             span_adjacent=span_adjacent, doc_id=doc_id)
 }
 
 #' Highlight tokens per category
@@ -146,6 +152,7 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 #'                 the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
 #'                This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).
 #' @param span_adjacent If TRUE, include adjacent tokens with identical attributes within the same tag
+#' @param doc_id  If span_adjacent is TRUE, The document ids are required to ensure that tags do not span from one document to another.
 #'
 #' @return a character vector of color-tagged tokens
 #' @export
@@ -153,7 +160,7 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 #' tokens = c('token_1','token_2','token_3','token_4')
 #' category = c('a','a',NA,'b')
 #' category_highlight_tokens(tokens, category)
-category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, colors=NULL, unfold=NULL, span_adjacent=F) {
+category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, colors=NULL, unfold=NULL, span_adjacent=F, doc_id=NULL) {
   ncategories = length(unique(stats::na.omit(category)))
 
   if (methods::is(category, 'character')) category = factor(category, labels=stats::na.omit(unique(category)))
@@ -178,7 +185,7 @@ category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, 
                       style = attr_style(`background-color` = col),
                       title = labels[category],
                       unfold=unfold,
-                      span_adjacent=span_adjacent)
+                      span_adjacent=span_adjacent, doc_id=doc_id)
   #tokens = tag_tokens(tokens, 'a', tag_attr(href = stringi::stri_paste('#nav', category, sep='')),
   #                    span_adjacent=T)
   tokens

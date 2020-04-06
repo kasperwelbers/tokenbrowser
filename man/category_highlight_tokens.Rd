@@ -11,7 +11,8 @@ category_highlight_tokens(
   alpha = 0.4,
   colors = NULL,
   unfold = NULL,
-  span_adjacent = F
+  span_adjacent = F,
+  doc_id = NULL
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ as unique(na.omit(category))}
 This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).}
 
 \item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
+
+\item{doc_id}{If span_adjacent is TRUE, The document ids are required to ensure that tags do not span from one document to another.}
 }
 \value{
 a character vector of color-tagged tokens

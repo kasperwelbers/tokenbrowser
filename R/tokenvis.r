@@ -110,7 +110,7 @@ create_browser <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token
 #' browseURL(url)     ## view browser in default webbrowser
 #' }
 highlighted_browser <- function(tokens, value, meta=NULL, col='yellow', doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, unfold=NULL, span_adjacent=T, ...){
-  tokens[[token_col]] = highlight_tokens(tokens[[token_col]], value=value, col = col, unfold=unfold, span_adjacent = span_adjacent)
+  tokens[[token_col]] = highlight_tokens(tokens[[token_col]], value=value, col = col, unfold=unfold, span_adjacent = span_adjacent, doc_id=tokens[[doc_col]])
   create_browser(tokens, meta, doc_col, token_col, doc_nav=doc_nav, token_nav=token_nav, filename=filename, ...)
 }
 
@@ -152,7 +152,7 @@ highlighted_browser <- function(tokens, value, meta=NULL, col='yellow', doc_col=
 #' browseURL(url)     ## view browser in default webbrowser
 #' }
 colorscaled_browser <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c('red','blue'), doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, unfold=NULL, span_adjacent=T, ...){
-  tokens[[token_col]] = colorscale_tokens(tokens=tokens[[token_col]], value=value, col_range = col_range, alpha=alpha, unfold=unfold, span_adjacent = span_adjacent)
+  tokens[[token_col]] = colorscale_tokens(tokens=tokens[[token_col]], value=value, col_range = col_range, alpha=alpha, unfold=unfold, span_adjacent = span_adjacent, doc_id=tokens[[doc_col]])
   create_browser(tokens, meta, doc_col, token_col, doc_nav=doc_nav, token_nav=token_nav, filename=filename, ...)
 }
 
@@ -209,7 +209,7 @@ categorical_browser <- function(tokens, category, alpha=0.3, labels=NULL, meta=N
   }
   if (is.null(colors)) colors = grDevices::rainbow(length(unique(stats::na.omit(category))))
 
-  tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, labels=labels, alpha=alpha, colors = colors, unfold=unfold, span_adjacent = span_adjacent)
+  tokens[[token_col]] = category_highlight_tokens(tokens[[token_col]], category=category, labels=labels, alpha=alpha, colors = colors, unfold=unfold, span_adjacent = span_adjacent, doc_id=tokens[[doc_col]])
   tokens[['multi_cat']] = factor(category, labels=labels)
   create_browser(tokens, meta, doc_col, token_col, token_nav='multi_cat', filename= filename, colors=colors, ...)
 }

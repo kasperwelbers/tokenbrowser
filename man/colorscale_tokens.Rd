@@ -10,7 +10,8 @@ colorscale_tokens(
   alpha = 0.4,
   col_range = c("red", "blue"),
   unfold = NULL,
-  span_adjacent = F
+  span_adjacent = F,
+  doc_id = NULL
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ the values of the columns are concatenated with the column name. E.g. list(doc_i
 This only works if the tagged tokens are used in the html browser created with the \code{\link{create_browser}} function (as it relies on javascript).}
 
 \item{span_adjacent}{If TRUE, include adjacent tokens with identical attributes within the same tag}
+
+\item{doc_id}{If span_adjacent is TRUE, The document ids are required to ensure that tags do not span from one document to another.}
 }
 \value{
 a character vector of color-tagged tokens
