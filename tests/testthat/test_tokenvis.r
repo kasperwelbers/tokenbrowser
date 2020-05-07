@@ -39,9 +39,8 @@ test_that("tokenbrowser", {
   ## categories (using top_nav)
   category = match(sotu_data$tokens$pos, c('N','M','V'))
   category[sotu_data$tokens$doc_id == unique(sotu_data$tokens$doc_id)[2]] = NA ## add empty document for test
+
   url = categorical_browser(sotu_data$tokens, category=category, labels=c('N','M','V'), meta=sotu_data$meta, top_nav=2)
   testthat::expect_true(file.exists(url))
-
-
 })
 

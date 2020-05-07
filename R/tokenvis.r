@@ -204,7 +204,7 @@ categorical_browser <- function(tokens, category, alpha=0.3, labels=NULL, meta=N
   }
 
   if (is.null(meta)) {
-    meta = data.frame(doc_id = tokens[[doc_col]])
+    meta = data.frame(doc_id = unique(tokens[[doc_col]]))
     colnames(meta) = doc_col
   }
   if (is.null(colors)) colors = grDevices::rainbow(length(unique(stats::na.omit(category))))

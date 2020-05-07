@@ -72,7 +72,7 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', na
   doc_id = unique(tokens[[doc_col]])
   if (!is.null(meta)) {
     meta = as.data.frame(meta)
-    meta = meta[match(doc_id, meta[[doc_col]]),]
+    meta = meta[match(doc_id, meta[[doc_col]]),,drop=F]
   } else {
     meta = data.frame(doc_id = doc_id)
     colnames(meta) = doc_col

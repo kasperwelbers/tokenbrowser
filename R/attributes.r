@@ -9,6 +9,7 @@
 #' add_tag('TEXT', 'span', tag_attr(class='CLASS'))
 tag_attr <- function(...) {
   attr = list(...)
+  attr = attr[!sapply(attr, is.null)]
   if (length(attr) == 0) return(NULL)
   for (name in names(attr)) {
     if (name != '') {

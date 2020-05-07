@@ -70,7 +70,6 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, doc_id=NULL, unfold=
   tokens
 }
 
-
 #' Highlight tokens
 #'
 #' This is a convenience wrapper for tag_tokens() that can be used if tokens only need to be colored.
@@ -80,6 +79,7 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, doc_id=NULL, unfold=
 #'                  If a logical vector is used, then tokens with TRUE will be highlighted (with the color specified in pos_col).
 #'                  If a numeric vector is used, the value determines the alpha (transparency), with 0 being fully transparent
 #'                  and 1 being fully colored.
+#' @param class     Optionally, a character vector of the class to add to the span tags. If NA no class is added
 #' @param col       The color used to highlight
 #' @param unfold  Either a character vector or a named list of vectors of the same length as tokens. If given, all tokens with a tag can be clicked on to unfold the given text. If a list of vectors is given,
 #'                the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
@@ -97,14 +97,18 @@ tag_tokens <- function(tokens, tag='span', span_adjacent=F, doc_id=NULL, unfold=
 #'
 #' highlight_tokens(c('token_1','token_2','token_3'),
 #'                  value = c(0,0.3,0.6))
-highlight_tokens <- function(tokens, value, col='yellow', unfold=NULL, span_adjacent=F, doc_id=NULL) {
+highlight_tokens <- function(tokens, value, class=NULL, col='yellow', unfold=NULL, span_adjacent=F, doc_id=NULL) {
+  tokens = gsub('[<>]', '', tokens)
+
   col = highlight_col(value, col=col)
   tokens = tag_tokens(tokens,
+             class=class,
              style = attr_style(`background-color` = col),
              unfold = unfold,
              span_adjacent=span_adjacent, doc_id=doc_id)
   tokens
 }
+
 
 #' Color tokens using colorRamp
 #'
@@ -115,6 +119,7 @@ highlight_tokens <- function(tokens, value, col='yellow', unfold=NULL, span_adja
 #'                   specified in col_range
 #' @param alpha      Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
 #'                   fully colored. This can be a vector to specify a different alpha for each value.
+#' @param class     Optionally, a character vector of the class to add to the span tags. If NA no class is added
 #' @param col_range  The colors used in the scale ramp.
 #' @param unfold  Either a character vector or a named list of vectors of the same length as tokens. If given, all tokens with a tag can be clicked on to unfold the given text. If a list of vectors is given,
 #'                the values of the columns are concatenated with the column name. E.g. list(doc_id = 1, sentence = 1) will be [doc_id = 1, sentence = 2].
@@ -128,10 +133,13 @@ highlight_tokens <- function(tokens, value, col='yellow', unfold=NULL, span_adja
 #' @examples
 #' colorscale_tokens(c('token_1','token_2','token_3'),
 #'                  value = c(-1,0,1))
-colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue'), unfold=NULL, span_adjacent=F, doc_id=NULL) {
+colorscale_tokens <- function(tokens, value, alpha=0.4, class=NULL, col_range=c('red', 'blue'), unfold=NULL, span_adjacent=F, doc_id=NULL) {
+  tokens = gsub('[<>]', '', tokens)
+
   col = scale_col(value, alpha=alpha, col_range=col_range)
 
   tag_tokens(tokens,
+             class=class,
              style = attr_style(`background-color` = col),
              unfold=unfold,
              span_adjacent=span_adjacent, doc_id=doc_id)
@@ -146,6 +154,8 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 #' @param labels    A character vector with labels for the categories
 #' @param alpha      Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
 #'                   fully colored. This can be a vector to specify a different alpha for each value.
+#' @param class     Optionally, a character vector of the class to add to the span tags. If NA no class is added
+
 #' @param colors    A character vector with color names for unique values of the value argument. Has to be the same length
 #'                  as unique(na.omit(category))
 #' @param unfold   Either a character vector or a named list of vectors of the same length as tokens. If given, all tokens with a tag can be clicked on to unfold the given text. If a list of vectors is given,
@@ -160,7 +170,9 @@ colorscale_tokens <- function(tokens, value, alpha=0.4, col_range=c('red', 'blue
 #' tokens = c('token_1','token_2','token_3','token_4')
 #' category = c('a','a',NA,'b')
 #' category_highlight_tokens(tokens, category)
-category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, colors=NULL, unfold=NULL, span_adjacent=F, doc_id=NULL) {
+category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, class=NULL, colors=NULL, unfold=NULL, span_adjacent=F, doc_id=NULL) {
+  tokens = gsub('[<>]', '', tokens)
+
   ncategories = length(unique(stats::na.omit(category)))
 
   if (methods::is(category, 'character')) category = factor(category, labels=stats::na.omit(unique(category)))
@@ -182,6 +194,7 @@ category_highlight_tokens <- function(tokens, category, labels=NULL, alpha=0.4, 
 
   col = highlight_col(alpha, col=tcolor)
   tokens = tag_tokens(tokens,
+                      class=class,
                       style = attr_style(`background-color` = col),
                       title = labels[category],
                       unfold=unfold,
