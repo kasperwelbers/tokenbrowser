@@ -7,6 +7,7 @@
 highlight_tokens(
   tokens,
   value,
+  class = NULL,
   col = "yellow",
   unfold = NULL,
   span_adjacent = F,
@@ -20,6 +21,8 @@ highlight_tokens(
 If a logical vector is used, then tokens with TRUE will be highlighted (with the color specified in pos_col).
 If a numeric vector is used, the value determines the alpha (transparency), with 0 being fully transparent
 and 1 being fully colored.}
+
+\item{class}{Optionally, a character vector of the class to add to the span tags. If NA no class is added}
 
 \item{col}{The color used to highlight}
 

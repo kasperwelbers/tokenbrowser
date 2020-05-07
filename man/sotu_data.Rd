@@ -4,7 +4,9 @@
 \name{sotu_data}
 \alias{sotu_data}
 \title{Tokens from Bush and Obamas State of the Union addresses}
-\format{sotu_data: A data.frame with tokens and a data.frame with meta data}
+\format{
+sotu_data: A data.frame with tokens and a data.frame with meta data
+}
 \usage{
 data(sotu_data)
 }

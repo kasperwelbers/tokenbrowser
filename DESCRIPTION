@@ -20,4 +20,4 @@ Description: Create browsers for reading full texts from a token list format.
     can be used to annotate the texts.
 SystemRequirements: C++11
 Encoding: UTF-8
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0

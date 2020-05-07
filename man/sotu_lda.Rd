@@ -4,7 +4,9 @@
 \name{sotu_lda}
 \alias{sotu_lda}
 \title{Word assignments, docXtopic matrix and topicXword matrix of an LDA model of the SOTU data}
-\format{sotu_lda: Word assignments is a data.frame with document, lemma and topic columns. topic_word_mat and doc_topic_mat are matrices}
+\format{
+sotu_lda: Word assignments is a data.frame with document, lemma and topic columns. topic_word_mat and doc_topic_mat are matrices
+}
 \usage{
 data(sotu_lda)
 }

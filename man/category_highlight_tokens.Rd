@@ -9,6 +9,7 @@ category_highlight_tokens(
   category,
   labels = NULL,
   alpha = 0.4,
+  class = NULL,
   colors = NULL,
   unfold = NULL,
   span_adjacent = F,
@@ -24,6 +25,8 @@ category_highlight_tokens(
 
 \item{alpha}{Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
 fully colored. This can be a vector to specify a different alpha for each value.}
+
+\item{class}{Optionally, a character vector of the class to add to the span tags. If NA no class is added}
 
 \item{colors}{A character vector with color names for unique values of the value argument. Has to be the same length
 as unique(na.omit(category))}

@@ -8,6 +8,7 @@ colorscale_tokens(
   tokens,
   value,
   alpha = 0.4,
+  class = NULL,
   col_range = c("red", "blue"),
   unfold = NULL,
   span_adjacent = F,
@@ -22,6 +23,8 @@ specified in col_range}
 
 \item{alpha}{Optionally, the alpha (transparency) can be specified, with 0 being fully transparent and 1 being
 fully colored. This can be a vector to specify a different alpha for each value.}
+
+\item{class}{Optionally, a character vector of the class to add to the span tags. If NA no class is added}
 
 \item{col_range}{The colors used in the scale ramp.}
 
