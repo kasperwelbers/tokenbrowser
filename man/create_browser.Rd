@@ -9,6 +9,7 @@ create_browser(
   meta = NULL,
   doc_col = "doc_id",
   token_col = "token",
+  space_col = NULL,
   doc_nav = NULL,
   token_nav = NULL,
   filename = NULL,
@@ -34,6 +35,8 @@ to the browser as document meta}
 \item{doc_col}{The name of the document id column}
 
 \item{token_col}{The name of the token column}
+
+\item{space_col}{Optionally, a column with space indications (" ", "\\n", etc.) per token (which is how some NLP parsers indicate spaces)}
 
 \item{doc_nav}{The name of a column (factor or character) in meta, used to create a navigation bar for selecting document groups.}
 
@@ -74,6 +77,8 @@ url = create_browser(sotu_data$tokens, sotu_data$meta, token_col = 'token', head
 
 \donttest{
 view_browser(url)   ## view browser in the Viewer
-browseURL(url)     ## view browser in default webbrowser
+}
+if (interactive()) {
+browseURL(url)     ## view in default webbrowser
 }
 }

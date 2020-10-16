@@ -9,6 +9,7 @@ wrap_documents(
   meta,
   doc_col = "doc_id",
   token_col = "token",
+  space_col = NULL,
   nav = doc_col,
   token_nav = NULL,
   top_nav = NULL,
@@ -25,6 +26,8 @@ to the browser as document meta}
 \item{doc_col}{The name of the document id column}
 
 \item{token_col}{The name of the token column}
+
+\item{space_col}{Optionally, a column with space indications (e.g., newline) per token (which is how some NLP parsers indicate spaces)}
 
 \item{nav}{The column in meta used for nav. Defaults to 'doc_id'}
 

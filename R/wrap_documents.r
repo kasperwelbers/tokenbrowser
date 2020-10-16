@@ -12,7 +12,7 @@ create_doc_headers <- function(meta, doc_col='doc_id', nav=doc_col) {
 
 }
 
-wrap_tokens <- function(tokens, doc_col='doc_id', token_col='token'){
+wrap_tokens <- function(tokens, doc_col='doc_id', token_col='token', space_col=NULL){
   if (any(is.na(tokens[[token_col]]))) {
     if (is.factor(tokens[[token_col]])) {
       levels(tokens[[token_col]]) = union(levels(tokens[[token_col]]), '')
@@ -23,8 +23,14 @@ wrap_tokens <- function(tokens, doc_col='doc_id', token_col='token'){
   ## quick hack because split sorts by f. needs more efficient solution
   i = match(tokens[[doc_col]], unique(tokens[[doc_col]]))
 
+  if (!is.null(space_col) && space_col %in% colnames(tokens)){
+    space = tokens[[space_col]]
+  } else
+    space = ' '
+  tokens[[token_col]] = stringi::stri_paste(tokens[[token_col]], space, sep='')
+
   text = split(tokens[[token_col]], f = i)
-  text = stringi::stri_paste_list(text, sep=' ')
+  text = stringi::stri_paste_list(text, sep='')
   text = gsub('\\n', '<br>', text)
   sprintf('<p>%s</p>', pretty_text_wrap(text))
 }
@@ -56,6 +62,7 @@ pretty_text_wrap <- function(x){
 #'                   to the browser as document meta
 #' @param doc_col    The name of the document id column
 #' @param token_col  The name of the token column
+#' @param space_col  Optionally, a column with space indications (e.g., newline) per token (which is how some NLP parsers indicate spaces)
 #' @param nav        The column in meta used for nav. Defaults to 'doc_id'
 #' @param token_nav  Alternative to nav (which uses meta), a column in tokens used for navigation
 #' @param top_nav    If token_nav is used, navigation filters will only apply to the top x values with highest token occurence in a document
@@ -67,7 +74,7 @@ pretty_text_wrap <- function(x){
 #' docs = wrap_documents(sotu_data$tokens, sotu_data$meta)
 #' head(names(docs))
 #' docs[[1]]
-wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', nav=doc_col, token_nav=NULL, top_nav=NULL, thres_nav=NULL) {
+wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', space_col=NULL, nav=doc_col, token_nav=NULL, top_nav=NULL, thres_nav=NULL) {
   if (!methods::is(tokens, 'data.frame')) tokens = as.data.frame(tokens)
   doc_id = unique(tokens[[doc_col]])
   if (!is.null(meta)) {
@@ -87,7 +94,7 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', na
     header = create_doc_headers(meta, doc_col = doc_col, nav= nav)
   }
 
-  texts = wrap_tokens(tokens, doc_col=doc_col, token_col=token_col)
+  texts = wrap_tokens(tokens, doc_col=doc_col, token_col=token_col, space_col=space_col)
   docs = stringi::stri_paste(header, texts, sep='\n')
 
   docs = add_tag(docs, 'article', tag_attr(insearch="1",infilter="1"))

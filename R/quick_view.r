@@ -15,6 +15,6 @@ view_browser <- function(url) {
   if (!is.null(viewer))
     viewer(url)
   else
-    utils::browseURL(url)
+    if (interactive()) utils::browseURL(url)
 }
 

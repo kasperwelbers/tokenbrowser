@@ -6,6 +6,7 @@
 #'                  to the browser as document meta
 #' @param doc_col   The name of the document id column
 #' @param token_col The name of the token column
+#' @param space_col  Optionally, a column with space indications (" ", "\\n", etc.) per token (which is how some NLP parsers indicate spaces)
 #' @param doc_nav   The name of a column (factor or character) in meta, used to create a navigation bar for selecting document groups.
 #' @param token_nav Alternative to doc_nav, a column in the tokens. Navigation filters will then be used to select documents in which
 #'                  the value occurs at least once.
@@ -30,12 +31,14 @@
 #'
 #' \donttest{
 #' view_browser(url)   ## view browser in the Viewer
-#' browseURL(url)     ## view browser in default webbrowser
 #' }
-create_browser <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, css_str=NULL, header='', subheader='', n=TRUE, navfilter=TRUE, top_nav=NULL, thres_nav=1, colors=NULL, style_col1="#7D1935", style_col2="#F5F3EE"){
+#' if (interactive()) {
+#' browseURL(url)     ## view in default webbrowser
+#' }
+create_browser <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token', space_col=NULL, doc_nav=NULL, token_nav=NULL, filename=NULL, css_str=NULL, header='', subheader='', n=TRUE, navfilter=TRUE, top_nav=NULL, thres_nav=1, colors=NULL, style_col1="#7D1935", style_col2="#F5F3EE"){
   tokens[[doc_col]] = factor(as.character(tokens[[doc_col]]), levels=unique(tokens[[doc_col]]))
 
-  docs = wrap_documents(tokens, meta, doc_col, token_col, nav=doc_nav, token_nav = token_nav, top_nav=top_nav, thres_nav=thres_nav)
+  docs = wrap_documents(tokens, meta, doc_col, token_col, space_col, nav=doc_nav, token_nav = token_nav, top_nav=top_nav, thres_nav=thres_nav)
   docstring = stringi::stri_paste(docs, collapse='\n\n')
 
   doc_ids = unique(tokens[[doc_col]])
@@ -107,7 +110,9 @@ create_browser <- function(tokens, meta=NULL, doc_col='doc_id', token_col='token
 #'
 #' \donttest{
 #' view_browser(url)   ## view browser in the Viewer
-#' browseURL(url)     ## view browser in default webbrowser
+#' }
+#' if (interactive()) {
+#' browseURL(url)     ## view in default webbrowser
 #' }
 highlighted_browser <- function(tokens, value, meta=NULL, col='yellow', doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, unfold=NULL, span_adjacent=T, ...){
   tokens[[token_col]] = highlight_tokens(tokens[[token_col]], value=value, col = col, unfold=unfold, span_adjacent = span_adjacent, doc_id=tokens[[doc_col]])
@@ -149,7 +154,9 @@ highlighted_browser <- function(tokens, value, meta=NULL, col='yellow', doc_col=
 #'
 #' \donttest{
 #' view_browser(url)   ## view browser in the Viewer
-#' browseURL(url)     ## view browser in default webbrowser
+#' }
+#' if (interactive()) {
+#' browseURL(url)     ## view in default webbrowser
 #' }
 colorscaled_browser <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c('red','blue'), doc_col='doc_id', token_col='token', doc_nav=NULL, token_nav=NULL, filename=NULL, unfold=NULL, span_adjacent=T, ...){
   tokens[[token_col]] = colorscale_tokens(tokens=tokens[[token_col]], value=value, col_range = col_range, alpha=alpha, unfold=unfold, span_adjacent = span_adjacent, doc_id=tokens[[doc_col]])
@@ -192,7 +199,9 @@ colorscaled_browser <- function(tokens, value, alpha=0.4, meta=NULL, col_range=c
 #'
 #' \donttest{
 #' view_browser(url)   ## view browser in the Viewer
-#' browseURL(url)     ## view browser in default webbrowser
+#' }
+#' if (interactive()) {
+#' browseURL(url)     ## view in default webbrowser
 #' }
 categorical_browser <- function(tokens, category, alpha=0.3, labels=NULL, meta=NULL, colors=NULL, doc_col='doc_id', token_col='token', filename=NULL, unfold=NULL, span_adjacent=T, ...){
   if (methods::is(category, 'character')) category = as.factor(category)

@@ -69,6 +69,8 @@ url = colorscaled_browser(sotu_data$tokens, value = scale, meta=sotu_data$meta)
 
 \donttest{
 view_browser(url)   ## view browser in the Viewer
-browseURL(url)     ## view browser in default webbrowser
+}
+if (interactive()) {
+browseURL(url)     ## view in default webbrowser
 }
 }
