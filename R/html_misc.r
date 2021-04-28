@@ -74,7 +74,7 @@ create_meta_tables <- function(meta, ignore_col=NULL, drop.missing=FALSE) {
       if (col %in% ignore_col) next
       colval = as.character(meta[[col]])
       if (!drop.missing) colval[is.na(colval)] = ''
-      html_table = ifelse(is.na(colval), '', stringi::stri_paste('\n', html_table, '<tr><th>', col, '</th><td>', colval, '</td></tr>'))
+      html_table = stringi::stri_paste('\n', html_table, ifelse(is.na(colval), '', stringi::stri_paste('<tr><th>', col, '</th><td>', colval, '</td></tr>')))
     }
     add_tag(html_table, 'table', tag_attr(class='meta_table', style=attr_style(`border-spacing`= '0px')))
   } else ''
