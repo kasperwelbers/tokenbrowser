@@ -32,10 +32,9 @@ wrap_tokens <- function(tokens, doc_col='doc_id', token_col='token', space_col=N
   text = split(tokens[[token_col]], f = i)
   text = stringi::stri_paste_list(text, sep='')
   text = gsub('\\n', '<br>', text)
-  sprintf('<p>%s</p>', pretty_text_wrap(text))
+  if (is.null(space_col)) text = pretty_text_wrap(text)
+  sprintf('<p>%s</p>', text)
 }
-
-
 
 
 pretty_text_wrap <- function(x){
