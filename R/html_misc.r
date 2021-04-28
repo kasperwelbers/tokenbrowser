@@ -59,21 +59,22 @@ str_is_lead <- function(x) {
 #'
 #' @param meta a data.frame where each row represents the meta data for a document
 #' @param ignore_col optionally, a character vector with names of metadata columns to ignore
+#' @param drop.missing if TRUE, omit missing meta rows instead of printing empty value
 #'
 #' @return a character vector where each value contains a string for an html table.
 #' @export
 #' @examples
 #' tabs = create_meta_tables(sotu_data$meta)
 #' tabs[1]
-create_meta_tables <- function(meta, ignore_col=NULL) {
+create_meta_tables <- function(meta, ignore_col=NULL, drop.missing=FALSE) {
   if (ncol(meta) > 0) {
     html_table = ''
     for (col in colnames(meta)) {
       if (col == 'NAVIGATION_STRING') next
       if (col %in% ignore_col) next
       colval = as.character(meta[[col]])
-      colval[is.na(colval)] = ''
-      html_table = stringi::stri_paste('\n', html_table, '<tr><th>', col, '</th><td>', colval, '</td></tr>')
+      if (!drop.missing) colval[is.na(colval)] = ''
+      html_table = ifelse(is.na(colval), '', stringi::stri_paste('\n', html_table, '<tr><th>', col, '</th><td>', colval, '</td></tr>'))
     }
     add_tag(html_table, 'table', tag_attr(class='meta_table', style=attr_style(`border-spacing`= '0px')))
   } else ''
