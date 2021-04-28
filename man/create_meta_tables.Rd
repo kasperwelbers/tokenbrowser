@@ -4,12 +4,14 @@
 \alias{create_meta_tables}
 \title{HTML tables for meta data per document}
 \usage{
-create_meta_tables(meta, ignore_col = NULL)
+create_meta_tables(meta, ignore_col = NULL, drop_missing = FALSE)
 }
 \arguments{
 \item{meta}{a data.frame where each row represents the meta data for a document}
 
 \item{ignore_col}{optionally, a character vector with names of metadata columns to ignore}
+
+\item{drop_missing}{if TRUE, omit missing meta rows instead of printing empty value}
 }
 \value{
 a character vector where each value contains a string for an html table.

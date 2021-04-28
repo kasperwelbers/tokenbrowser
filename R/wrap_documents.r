@@ -1,12 +1,12 @@
-create_doc_headers <- function(meta, doc_col='doc_id', nav=doc_col, drop.missing.meta=FALSE) {
+create_doc_headers <- function(meta, doc_col='doc_id', nav=doc_col, drop_missing_meta=FALSE) {
   title = add_tag(meta[[doc_col]], 'doc_id')
 
   if (!is.null(nav)) {
     navtags = add_tag(nav, 'div', tag_attr(style=attr_style(display="none")))
-    meta = create_meta_tables(meta, ignore_col = doc_col, drop.missing=drop.missing.meta)
+    meta = create_meta_tables(meta, ignore_col = doc_col, drop_missing=drop_missing_meta)
     stringi::stri_paste(title, navtags, meta, sep='\n')
   } else {
-    meta = create_meta_tables(meta, ignore_col = doc_col, drop.missing=drop.missing.meta)
+    meta = create_meta_tables(meta, ignore_col = doc_col, drop_missing=drop_missing_meta)
     stringi::stri_paste(title, meta, sep='\n')
   }
 
@@ -66,7 +66,7 @@ pretty_text_wrap <- function(x){
 #' @param token_nav  Alternative to nav (which uses meta), a column in tokens used for navigation
 #' @param top_nav    If token_nav is used, navigation filters will only apply to the top x values with highest token occurence in a document
 #' @param thres_nav  Like top_nav, but specifying a threshold for the minimum number of tokens.
-#' @param drop.missing.meta if TRUE, omit missing meta rows instead of printing empty value
+#' @param drop_missing_meta if TRUE, omit missing meta rows instead of printing empty value
 #'
 #' @return A named vector, with document ids as names and the document html strings as values
 #' @export
@@ -74,7 +74,7 @@ pretty_text_wrap <- function(x){
 #' docs = wrap_documents(sotu_data$tokens, sotu_data$meta)
 #' head(names(docs))
 #' docs[[1]]
-wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', space_col=NULL, nav=doc_col, token_nav=NULL, top_nav=NULL, thres_nav=NULL, drop.missing.meta=FALSE) {
+wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', space_col=NULL, nav=doc_col, token_nav=NULL, top_nav=NULL, thres_nav=NULL, drop_missing_meta=FALSE) {
   if (!methods::is(tokens, 'data.frame')) tokens = as.data.frame(tokens)
   doc_id = unique(tokens[[doc_col]])
   if (!is.null(meta)) {
@@ -88,10 +88,10 @@ wrap_documents <- function(tokens, meta, doc_col='doc_id', token_col='token', sp
 
   if (!is.null(token_nav)) {
     nav = token_nav_string(tokens, meta, doc_col, token_nav, top_nav, thres_nav)
-    header = create_doc_headers(meta, doc_col = doc_col, nav=nav, drop.missing.meta=drop.missing.meta)
+    header = create_doc_headers(meta, doc_col = doc_col, nav=nav, drop_missing_meta=drop_missing_meta)
   } else {
     nav = if (is.null(nav)) NULL else sprintf('<tag>%s</tag>', meta[[nav]])
-    header = create_doc_headers(meta, doc_col = doc_col, nav= nav, drop.missing.meta=drop.missing.meta)
+    header = create_doc_headers(meta, doc_col = doc_col, nav= nav, drop_missing_meta=drop_missing_meta)
   }
 
   texts = wrap_tokens(tokens, doc_col=doc_col, token_col=token_col, space_col=space_col)

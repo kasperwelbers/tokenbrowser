@@ -13,7 +13,8 @@ wrap_documents(
   nav = doc_col,
   token_nav = NULL,
   top_nav = NULL,
-  thres_nav = NULL
+  thres_nav = NULL,
+  drop_missing_meta = FALSE
 )
 }
 \arguments{
@@ -36,6 +37,8 @@ to the browser as document meta}
 \item{top_nav}{If token_nav is used, navigation filters will only apply to the top x values with highest token occurence in a document}
 
 \item{thres_nav}{Like top_nav, but specifying a threshold for the minimum number of tokens.}
+
+\item{drop_missing_meta}{if TRUE, omit missing meta rows instead of printing empty value}
 }
 \value{
 A named vector, with document ids as names and the document html strings as values

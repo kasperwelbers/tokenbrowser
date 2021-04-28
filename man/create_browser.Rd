@@ -22,7 +22,8 @@ create_browser(
   thres_nav = 1,
   colors = NULL,
   style_col1 = "#7D1935",
-  style_col2 = "#F5F3EE"
+  style_col2 = "#F5F3EE",
+  drop_missing_meta = FALSE
 )
 }
 \arguments{
@@ -65,6 +66,8 @@ unique non-NA items in the navigation.}
 \item{style_col1}{Color of the browser header}
 
 \item{style_col2}{Color of the browser background}
+
+\item{drop_missing_meta}{if TRUE, omit missing meta rows instead of printing empty value}
 }
 \value{
 The name of the file where the browser is saved. Can be opened conveniently from within R using browseUrl()

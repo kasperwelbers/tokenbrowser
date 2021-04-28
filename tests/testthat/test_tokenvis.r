@@ -17,7 +17,7 @@ test_that("tokenbrowser", {
   highlight = round(highlight / max(highlight), 1)
   highlight[highlight < 0.3] = NA
   url = highlighted_browser(sotu_data$tokens, value = highlight, sotu_data$meta)
-  view_browser(url)
+  #view_browser(url)
   testthat::expect_true(file.exists(url))
 
   ## scales
@@ -41,6 +41,12 @@ test_that("tokenbrowser", {
   category[sotu_data$tokens$doc_id == unique(sotu_data$tokens$doc_id)[2]] = NA ## add empty document for test
 
   url = categorical_browser(sotu_data$tokens, category=category, labels=c('N','M','V'), meta=sotu_data$meta, top_nav=2)
+  testthat::expect_true(file.exists(url))
+
+  ## remove missing meta
+  sotu_data$meta$medium[1] = NA
+  url = create_browser(sotu_data$tokens, meta=sotu_data$meta, drop_missing_meta=T)
+  #view_browser(url)
   testthat::expect_true(file.exists(url))
 })
 
