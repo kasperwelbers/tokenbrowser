@@ -54,6 +54,12 @@ navbar ul {
     padding-left: 0;
 }
 
+navbar ul li {
+  display: flex;
+  align-items: center;
+  height: 1rem;
+}
+
 navbar ul a {
     text-decoration: none;
 }

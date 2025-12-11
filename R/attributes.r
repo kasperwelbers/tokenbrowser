@@ -18,11 +18,10 @@ tag_attr <- function(...) {
       attr[[name]][not_na] = stringi::stri_paste(name, '="', attr[[name]][not_na], '"', sep='')
     }
   }
-  do.call(paste_na_omit, args = c(attr, sep=' '))
+
+  attr = attr[!is.na(attr)]
+  do.call(paste, args = c(attr, sep=' '))
 }
-
-
-
 
 
 #' Create the content of the html style attribute
@@ -39,12 +38,14 @@ tag_attr <- function(...) {
 #'          style = attr_style(`background-color` = 'rgba(255, 255, 0, 1)'))
 attr_style <- function(...){
   style = list(...)
+  style = style[!sapply(style, is.null)]
   for (name in names(style)) {
     style[[name]] = as.character(style[[name]])
     not_na = !is.na(style[[name]])
     style[[name]][!is.na(style[[name]])] = stringi::stri_paste(name, style[[name]][!is.na(style[[name]])], sep=': ')
   }
-  do.call(paste_na_omit, args = c(style, sep='; '))
-}
 
+  style = style[!is.na(style)]
+  do.call(paste, args = c(style, sep='; '))
+}
 
