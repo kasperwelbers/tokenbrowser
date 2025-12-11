@@ -1,5 +1,3 @@
-[![Travis-CI Build Status](https://travis-ci.org/kasperwelbers/tokenbrowser.svg?branch=master)](https://travis-ci.org/kasperwelbers/tokenbrowser)
-
 Tokenbrowser
 ============
 Create text browsers from tokenized texts to visualize text analysis annotations
