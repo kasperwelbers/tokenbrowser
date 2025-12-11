@@ -2,8 +2,15 @@ Package: tokenbrowser
 Type: Package
 Title: Create Full Text Browsers from Annotated Token Lists
 Version: 0.1.6
-Author: Kasper Welbers and Wouter van Atteveldt
-Maintainer: Kasper Welbers <kasperwelbers@gmail.com>
+Authors@R: 
+    c(person(given = "Kasper",
+             family = "Welbers",
+             role = c("aut", "cre"),
+             email = "kasperwelbers@gmail.com"),
+      person(given = "Wouter",
+             family = "van Atteveldt",
+             role = "aut",
+             email = "wouter@vanatteveldt.com"))
 License: GPL-3
 Depends:
     R (>= 2.10)
